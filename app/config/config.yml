@@ -82,3 +82,11 @@ fos_user:
     db_driver: mongodb # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Deb\UserBundle\Document\User            
+    
+hwi_oauth:
+    firewall_name: secured_area
+    resource_owners:
+        fb_auth:
+            type:                facebook
+            client_id:           1423207801254406
+            client_secret:       53fca6628ad074aa348eb757281670f1

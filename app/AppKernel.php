@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             
             //3d-party developers bundles
             new FOS\UserBundle\FOSUserBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()
             
         );

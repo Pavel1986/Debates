@@ -158,14 +158,12 @@ class ClassMetadataInfoTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
         $this->assertTrue($class->fieldMappings['address']['isCascadeRefresh']);
         $this->assertTrue($class->fieldMappings['address']['isCascadeMerge']);
         $this->assertTrue($class->fieldMappings['address']['isCascadeDetach']);
-        $this->assertTrue($class->fieldMappings['address']['isCascadeCallbacks']);
 
         $this->assertTrue($class->fieldMappings['addresses']['isCascadeRemove']);
         $this->assertTrue($class->fieldMappings['addresses']['isCascadePersist']);
         $this->assertTrue($class->fieldMappings['addresses']['isCascadeRefresh']);
         $this->assertTrue($class->fieldMappings['addresses']['isCascadeMerge']);
         $this->assertTrue($class->fieldMappings['addresses']['isCascadeDetach']);
-        $this->assertTrue($class->fieldMappings['addresses']['isCascadeCallbacks']);
     }
 
     /**
@@ -219,6 +217,22 @@ class ClassMetadataInfoTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
         $this->assertInstanceOf('\Documents\User', $proxy);
 
         $class->invokeLifecycleCallbacks(Events::prePersist, $proxy);
+    }
+
+    /**
+     * @expectedException \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @expectedExceptionMessage Target document must be specified for simple reference: stdClass::assoc
+     */
+    public function testSimpleReferenceRequiresTargetDocument()
+    {
+        $cm = new ClassMetadataInfo('stdClass');
+
+        $cm->mapField(array(
+            'fieldName' => 'assoc',
+            'reference' => true,
+            'type' => 'one',
+            'simple' => true,
+        ));
     }
 }
 
