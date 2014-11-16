@@ -74,7 +74,7 @@ class PersistenceBuilder
         $insertData = array();
         foreach ($class->fieldMappings as $mapping) {
 
-            // many collections are inserted later
+            // @ReferenceMany and @EmbedMany are inserted later
             if ($mapping['type'] === ClassMetadata::MANY) {
                 continue;
             }
@@ -103,20 +103,6 @@ class PersistenceBuilder
                 // @EmbedOne
                 } elseif (isset($mapping['association']) && $mapping['association'] === ClassMetadata::EMBED_ONE) {
                     $value = $this->prepareEmbeddedDocumentValue($mapping, $new);
-
-                // @ReferenceMany
-                } elseif (isset($mapping['association']) && $mapping['association'] === ClassMetadata::REFERENCE_MANY) {
-                    $value = array();
-                    foreach ($new as $reference) {
-                        $value[] = $this->prepareReferencedDocumentValue($mapping, $reference);
-                    }
-
-                // @EmbedMany
-                } elseif (isset($mapping['association']) && $mapping['association'] === ClassMetadata::EMBED_MANY) {
-                    $value = array();
-                    foreach ($new as $reference) {
-                        $value[] = $this->prepareEmbeddedDocumentValue($mapping, $reference);
-                    }
                 }
             }
 
@@ -124,8 +110,10 @@ class PersistenceBuilder
         }
 
         // add discriminator if the class has one
-        if ($class->hasDiscriminator()) {
-            $insertData[$class->discriminatorField] = $class->discriminatorValue;
+        if (isset($class->discriminatorField)) {
+            $insertData[$class->discriminatorField] = isset($class->discriminatorValue)
+                ? $class->discriminatorValue
+                : $class->name;
         }
 
         return $insertData;
@@ -302,8 +290,10 @@ class PersistenceBuilder
         }
 
         // add discriminator if the class has one
-        if ($class->hasDiscriminator()) {
-            $updateData['$set'][$class->discriminatorField] = $class->discriminatorValue;
+        if (isset($class->discriminatorField)) {
+            $updateData['$set'][$class->discriminatorField] = isset($class->discriminatorValue)
+                ? $class->discriminatorValue
+                : $class->name;
         }
 
         return $updateData;
