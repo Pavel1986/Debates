@@ -3,3 +3,4 @@ nbproject
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
+vendor/*
