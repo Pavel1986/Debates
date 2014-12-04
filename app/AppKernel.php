@@ -22,8 +22,8 @@ class AppKernel extends Kernel
             //3d-party developers bundles
             new FOS\UserBundle\FOSUserBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()
-            
+            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Exten\FOSUserBundle\ExtenFOSUserBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
