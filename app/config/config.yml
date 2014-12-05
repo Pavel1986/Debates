@@ -90,3 +90,7 @@ hwi_oauth:
             type:                facebook
             client_id:           1423207801254406
             client_secret:       53fca6628ad074aa348eb757281670f1
+            
+services:
+    authentication_handler:
+        class: Exten\FOSUserBundle\Handler\AuthenticationHandler
