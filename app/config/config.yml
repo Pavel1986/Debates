@@ -94,3 +94,4 @@ hwi_oauth:
 services:
     authentication_handler:
         class: Exten\FOSUserBundle\Handler\AuthenticationHandler
+        arguments:  [@router]
