@@ -29,14 +29,15 @@ implements AuthenticationSuccessHandlerInterface,
     
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
-        if ($request->isXmlHttpRequest()) {
-            $result = array('success' => true);
+        if ($request->isXmlHttpRequest()) {            
+            $referer_url = $request->headers->get('referer');
+            $result = array('success' => true, 'url' => $referer_url);
             $response = new Response(json_encode($result));
             $response->headers->set('Content-Type', 'application/json');
             return $response;
         }
     }
-
+                				    
     /**
      * This is called when an interactive authentication attempt fails. This is
      * called by authentication listeners inheriting from
