@@ -23,7 +23,12 @@
         
         <div id="structure">
 
-            <div id="header">               
+            <div id="header">   
+                
+                    <ul class="lang-menu">
+                        <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'})) }}">English</a></li>
+                        <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'ru'})) }}">Russian</a></li>
+                    </ul>
                 
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
@@ -47,13 +52,14 @@
                     {% endblock fos_user_content %}
                 </div>
 
-                {% block main_menu %}
+                {% block main_menu %}                                        
+                    
                     <div id="menu">
 
-                        <a href="{{ path('topics_list') }}">Home</a>
-                        <a href="{{ path('topic_detail') }}">Detail</a>
-                        <a href="{{ path('info_page') }}">Info Page</a>
-                        <a href="{{ path('personal_section') }}">Personal Section</a>
+                        <a href="{{ path('topics_list') }}">     {{ 'menu.index'    |trans({}, 'DebTopicsBundle') }}</a>
+                        <a href="{{ path('topic_detail') }}">    {{ 'menu.detail'   |trans({}, 'DebTopicsBundle') }}</a>
+                        <a href="{{ path('info_page') }}">       {{ 'menu.info'     |trans({}, 'DebTopicsBundle') }}</a>
+                        <a href="{{ path('personal_section') }}">{{ 'menu.personal' |trans({}, 'DebTopicsBundle') }}</a>
 
                     </div>
                 {% endblock %}

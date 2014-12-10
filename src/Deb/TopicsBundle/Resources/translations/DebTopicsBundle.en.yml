@@ -1,0 +1,5 @@
+menu:
+    index : "Main"
+    detail: "Detail"
+    info  : "Information"
+    personal : "Personal section"
