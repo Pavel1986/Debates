@@ -1,13 +1,71 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}{% endblock %}</title>
+        
+        <link href="{{ asset('bundles/deb/css/ui-lightness/jquery-ui-1.10.4.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('bundles/deb/css/style.css') }}" rel="stylesheet" />            
+        <link href="{{ asset('bundles/deb/css/jquery.validator.css') }}" rel="stylesheet" />
         {% block stylesheets %}{% endblock %}
+        
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        
+        <script src="{{ asset('bundles/deb/js/jquery-1.10.2.js') }}"></script>
+        <script src="{{ asset('bundles/deb/js/jquery-ui-1.10.4.min.js') }}"></script>
+        <script src="{{ asset('bundles/deb/js/validator.js') }}"></script>
+        <script src="{{ asset('bundles/deb/js/md5.js') }}"></script>
+        <script src="{{ asset('bundles/deb/js/common.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+        
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        Base
+        
+        <div id="structure">
+
+            <div id="header">               
+                
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    {% else %}
+                        {% render url('fos_user_security_login') %}
+                    {% endif %}
+
+                {% for type, messages in app.session.flashBag.all %}
+                    {% for message in messages %}
+                        <div class="{{ type }}">
+                            {{ message|trans({}, 'FOSUserBundle') }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                <div>
+                    {% block fos_user_content %}
+                    {% endblock fos_user_content %}
+                </div>
+
+                {% block main_menu %}
+                    <div id="menu">
+
+                        <a href="{{ path('topics_list') }}">Home</a>
+                        <a href="{{ path('topic_detail') }}">Detail</a>
+                        <a href="{{ path('info_page') }}">Info Page</a>
+                        <a href="{{ path('personal_section') }}">Personal Section</a>
+
+                    </div>
+                {% endblock %}
+
+            </div>
+
+            <div id="content">
+                {% block body %}{% endblock %}
+            </div>
+
+        </div>
+        
     </body>
 </html>
