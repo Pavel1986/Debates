@@ -1,6 +1,13 @@
-exten_fos_user:
-    resource: "@ExtenFOSUserBundle/Resources/config/routing.yml"
-    prefix:   /
+topics_index:
+    path:     /
+    defaults: { _controller: DebTopicsBundle:TopicsList:index }
+    
+deb_topics:
+    resource: "@DebTopicsBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}
+    requirements:
+        _locale: en|ru
+    defaults: { _locale: "%locale%" }
 
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
@@ -12,26 +19,28 @@ hwi_oauth_login:
 
 facebook_login:
     pattern: /login/check-facebook
+
     
-deb_topics:
-    resource: "@DebTopicsBundle/Resources/config/routing.yml"
-    prefix:   /
+exten_fos_user:
+    resource: "@ExtenFOSUserBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    prefix:   /{_locale}
 
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
-    prefix: /profile
+    prefix:   /{_locale}/profile
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /register
+    prefix:   /{_locale}/register
 
 fos_user_resetting:
     resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
-    prefix: /resetting
+    prefix:   /{_locale}/resetting
 
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
-    prefix: /profile 
+    prefix:   /{_locale}/profile 

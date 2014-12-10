@@ -1,7 +1,7 @@
 topics_list:
     path:     /
     defaults: { _controller: DebTopicsBundle:TopicsList:index }
-    
+        
 topic_detail:
     path:     /detail
     defaults: { _controller: DebTopicsBundle:TopicDetail:index }    

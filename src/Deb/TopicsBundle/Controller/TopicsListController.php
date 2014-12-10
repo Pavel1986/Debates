@@ -8,6 +8,9 @@ class TopicsListController extends Controller
 {
     public function indexAction()
     {            
-        return $this->render('DebTopicsBundle:TopicsList:topics_list.html.twig', array());
+        
+        $locale = $this->get('request')->getLocale();
+        
+        return $this->render('DebTopicsBundle:TopicsList:topics_list.html.twig', array('locale' => $locale));
     }        
 }
