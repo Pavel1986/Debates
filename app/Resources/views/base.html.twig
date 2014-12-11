@@ -12,6 +12,7 @@
         
         <script src="{{ asset('bundles/deb/js/jquery-1.10.2.js') }}"></script>
         <script src="{{ asset('bundles/deb/js/jquery-ui-1.10.4.min.js') }}"></script>
+        <script src="{{ asset('bundles/deb/js/common.js') }}"></script>
         {% block javascripts %}{% endblock %}
         
     </head>
@@ -32,6 +33,10 @@
                             {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                         </a>
                     {% else %}
+                        
+                        <input id="LoginBtn" type="button" value="Login">
+                        <input id="RegisterBtn" type="button" value="Register">
+                        
                         {% render url('fos_user_security_login') %}
                     {% endif %}
 

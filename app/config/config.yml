@@ -95,3 +95,8 @@ services:
     authentication_handler:
         class: Exten\FOSUserBundle\Handler\AuthenticationHandler
         arguments:  [@router]
+    exten_locale.locale_listener:
+        class: Exten\LocaleBundle\EventListener\LocaleListener
+        arguments: ["%kernel.default_locale%"]
+        tags:
+            - { name: kernel.event_subscriber }

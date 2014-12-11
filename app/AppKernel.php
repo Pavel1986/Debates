@@ -23,7 +23,8 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
-            new Exten\FOSUserBundle\ExtenFOSUserBundle()
+            new Exten\FOSUserBundle\ExtenFOSUserBundle(),
+            new Exten\LocaleBundle\ExtenLocaleBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

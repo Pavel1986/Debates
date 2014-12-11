@@ -1,13 +1,12 @@
-topics_index:
-    path:     /
-    defaults: { _controller: DebTopicsBundle:TopicsList:index }
-    
+exten_locale:
+    resource: "@ExtenLocaleBundle/Resources/config/routing.yml"
+    prefix:   /
+   
 deb_topics:
     resource: "@DebTopicsBundle/Resources/config/routing.yml"
     prefix:   /{_locale}
-    requirements:
-        _locale: en|ru
-    defaults: { _locale: "%locale%" }
+    requirements :
+        _locale : |en|ru
 
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
