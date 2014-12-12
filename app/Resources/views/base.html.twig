@@ -34,8 +34,8 @@
                         </a>
                     {% else %}
                         
-                        <input id="LoginBtn" type="button" value="Login">
-                        <input id="RegisterBtn" type="button" value="Register">
+                        <input id="LoginBtn" type="button" value="{{ 'layout.login'|trans({}, 'FOSUserBundle') }}">
+                        <input id="RegisterBtn" type="button" value="{{ 'layout.register'|trans({}, 'FOSUserBundle') }}">
                         
                         {% render url('fos_user_security_login') %}
                     {% endif %}

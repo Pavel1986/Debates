@@ -1,46 +1,48 @@
 {% block fos_user_content %}
-    
-    {% trans_default_domain 'FOSUserBundle' %}
+<div id="AuthForm">    
+        {% trans_default_domain 'FOSUserBundle' %}
 
-    <div id="error"></div>
+        <div id="error"></div>
 
-<script type="text/javascript">
-    
-    $(document).ready(function(){
-        $('#_submit').click(function(e){
-            $.ajax({
-                type        : $('form').attr( 'method' ),
-                url         : '{{ path("fos_user_security_check") }}',
-                data        : $('form').serialize(),
-                dataType    : "json",
-                success     : function(data, status, object) {
-                    if(data.success == false){
-                        $('#error').html(data.message) 
-                    } else if(data.success == true){
-                        window.location.replace(data.url);
-                    };
-                },
-                error: function(data, status, object){
-                    console.log(data.message);
-                }
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $('#_submit').click(function(e){
+                $.ajax({
+                    type        : $('form').attr( 'method' ),
+                    url         : '{{ path("fos_user_security_check") }}',
+                    data        : $('form').serialize(),
+                    dataType    : "json",
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                            $('#error').html(data.message) 
+                        } else if(data.success == true){
+                            window.location.replace(data.url);
+                        };
+                    },
+                    error: function(data, status, object){
+                        console.log(data.message);
+                    }
+                });
             });
         });
-    });
+
+    </script>
+
+    <form action="{{ path("exten_fos_user_security_check") }}" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+        <label for="username">{{ 'security.login.username'|trans }}</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+
+        <label for="password">{{ 'security.login.password'|trans }}</label>
+        <input type="password" id="password" name="_password" required="required" />
+
+        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+        <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+
+        <input type="button" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+    </form>
     
-</script>
-
-<form action="{{ path("exten_fos_user_security_check") }}" method="post">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-
-    <label for="username">{{ 'security.login.username'|trans }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-
-    <label for="password">{{ 'security.login.password'|trans }}</label>
-    <input type="password" id="password" name="_password" required="required" />
-
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
-
-    <input type="button" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-</form>
+</div>
 {% endblock fos_user_content %}
