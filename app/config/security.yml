@@ -23,6 +23,7 @@ security:
                 csrf_provider: form.csrf_provider
                 success_handler: authentication_handler
                 failure_handler: authentication_handler
+                check_path: exten_fos_user_security_check # This is needed to change
             logout:       true
             anonymous:    true
         secured_area:
