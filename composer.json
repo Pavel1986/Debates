@@ -22,7 +22,8 @@
         "friendsofsymfony/oauth-server-bundle": "1.4.1",
         "doctrine/mongodb-odm": "1.0.x-dev",
         "doctrine/mongodb-odm-bundle": "3.0.x-dev",
-        "hwi/oauth-bundle": "0.4.*@dev"
+        "hwi/oauth-bundle": "0.4.*@dev",
+        "jms/i18n-routing-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

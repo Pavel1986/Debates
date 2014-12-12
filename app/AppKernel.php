@@ -22,9 +22,11 @@ class AppKernel extends Kernel
             //3d-party developers bundles
             new FOS\UserBundle\FOSUserBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),            
+            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+            new JMS\TranslationBundle\JMSTranslationBundle(),
             new Exten\FOSUserBundle\ExtenFOSUserBundle(),
-            new Exten\LocaleBundle\ExtenLocaleBundle(),
+            new Exten\LocaleBundle\ExtenLocaleBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
