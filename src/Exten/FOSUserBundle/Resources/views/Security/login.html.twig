@@ -1,8 +1,8 @@
-{% block fos_user_content %}
+{% block fos_user_content_login %}
 <div id="AuthForm">    
         {% trans_default_domain 'FOSUserBundle' %}
 
-        <div id="error"></div>
+        <div id="AuthErrors"></div>
 
     <script type="text/javascript">
 
@@ -11,11 +11,11 @@
                 $.ajax({
                     type        : $('form').attr( 'method' ),
                     url         : '{{ path("fos_user_security_check") }}',
-                    data        : $('form').serialize(),
+                    data        : $('.fos_user_login_form').serialize(),
                     dataType    : "json",
                     success     : function(data, status, object) {
                         if(data.success == false){
-                            $('#error').html(data.message) 
+                            $('#AuthErrors').html(data.message) 
                         } else if(data.success == true){
                             window.location.replace(data.url);
                         };
@@ -29,7 +29,7 @@
 
     </script>
 
-    <form action="{{ path("exten_fos_user_security_check") }}" method="post">
+    <form action="{{ path("exten_fos_user_security_check") }}" method="post" class="fos_user_login_form">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
         <label for="username">{{ 'security.login.username'|trans }}</label>
@@ -45,4 +45,4 @@
     </form>
     
 </div>
-{% endblock fos_user_content %}
+{% endblock fos_user_content_login %}
