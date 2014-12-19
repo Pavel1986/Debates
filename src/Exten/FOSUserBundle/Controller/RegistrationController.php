@@ -9,12 +9,35 @@ class RegistrationController extends Controller
 {
     public function registerAction()
     {   
-        return $this->render('ExtenFOSUserBundle:Registration:register.html.twig');
+        
+        $request = $this->getRequest();
+        
+         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+        $formFactory = $this->get('fos_user.registration.form.factory');
+        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        $userManager = $this->get('fos_user.user_manager');
+        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        $dispatcher = $this->get('event_dispatcher');
+
+        $user = $userManager->createUser();
+        $user->setEnabled(true);
+        
+        $form = $formFactory->createForm();
+        $form->setData($user);
+
+        $form->handleRequest($request);
+                
+        $validation = $form->getErrors(true);   //Let's get errors
+        
+        return $this->render('ExtenFOSUserBundle:Registration:register.html.twig', array(
+            'form' => $form->createView(),
+        ));
         
     }
     
     public function ajaxRegisterAction()
     {            
+        
         $request = $this->getRequest();
         
         //if ($request->isXmlHttpRequest()) {
@@ -28,5 +51,10 @@ class RegistrationController extends Controller
             return $response;
             
         //}                
+         
+         
+        
+        
+
     }
 }
