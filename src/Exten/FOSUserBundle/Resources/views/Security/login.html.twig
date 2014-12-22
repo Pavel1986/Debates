@@ -7,7 +7,9 @@
     <script type="text/javascript">
 
         $(document).ready(function(){
-            $('#_submit').click(function(e){
+            $('.fos_user_login_form').submit(function(event){
+
+                event.preventDefault();
                 $.ajax({
                     type        : $('form').attr( 'method' ),
                     url         : '{{ path("fos_user_security_check") }}',
@@ -41,7 +43,7 @@
         <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
         <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
 
-        <input type="button" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+        <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
     </form>
     
 </div>

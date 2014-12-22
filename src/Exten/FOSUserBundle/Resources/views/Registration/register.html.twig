@@ -10,17 +10,23 @@
         <script type="text/javascript">
 
         $(document).ready(function(){           
-            $("#registerButton").click( function(){
+            $(".fos_user_registration_register").submit( function(event){
+                
+                event.preventDefault();
                 $.ajax({
                     type        : $('form').attr( 'method' ),
                     url         : '{{ path('exten_fos_user_register_check') }}',
                     data        : $('.fos_user_registration_register').serialize(),
                     dataType    : "json",
-                    success     : function(data) {
-                            $('#RegErrors').html(data.message) 
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                                $('#RegErrors').html(data.message);           
+                        } else if(data.success == true){
+                            window.location.replace(data.url);
+                        };
                     },
-                    error: function(data){
-                        $('#RegErrors').html(data);
+                    error: function(data, status, object){
+                        console.log(data.message);
                     }
                 });
             });               
@@ -48,7 +54,10 @@
                 <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" />
             </div>                  
             <div>
-                <input id="registerButton" type="button" value="{{ 'registration.submit'|trans }}" />
+                <input id="registerButton" type="submit" value="{{ 'registration.submit'|trans }}" />
+            </div>
+            <div>
+                {{ form_row(form._token) }}                
             </div>
         </div>
     </form>           
