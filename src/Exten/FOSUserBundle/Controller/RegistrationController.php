@@ -46,7 +46,11 @@ class RegistrationController extends Controller
             if($FormErrorIterator->count()){                                
                 $result = array('success' => false, 'message' => $FormErrorIterator->__toString());
             }else{
-                $result = array('success' => true, 'message' => array('Registred'));
+                //If form is valid
+                $userManager->updateUser($user);
+                
+                $referer_url = $request->headers->get('referer');
+                $result = array('success' => true, 'url' => $referer_url);
             }                                                                               
         }else{
             $result = array('success' => false, 'message' => array('This is not XmlHttpRequest'));
