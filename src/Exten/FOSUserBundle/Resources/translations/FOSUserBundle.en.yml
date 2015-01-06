@@ -18,6 +18,9 @@ security:
         password: "Password:"
         remember_me: Remember me
         submit: Login
+        close: Close
+        reset: Reset
+        auth : Authorization
 
 # Profile
 profile:
@@ -92,3 +95,6 @@ form:
     password_confirmation: "Confirm password:"
     new_password: "New password:"
     new_password_confirmation: "Verification:"
+
+"Bad credentials": "Авторизация прошла неуспешно"
+"Invalid CSRF token.": "Please try to reload page. And to resubmit the form."

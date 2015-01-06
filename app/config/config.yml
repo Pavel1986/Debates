@@ -94,7 +94,7 @@ hwi_oauth:
 services:
     authentication_handler:
         class: Exten\FOSUserBundle\Handler\AuthenticationHandler
-        arguments:  [@router]
+        arguments:  [@router, @translator]
     logout_success_handler:
         class: Exten\FOSUserBundle\Handler\LogoutSuccessHandler
         arguments:  [@router]        

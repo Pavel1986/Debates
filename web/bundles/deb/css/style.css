@@ -24,3 +24,10 @@ img{
 #menu{
       display: inline;
 }
+.fos_user_login_form {
+    text-align: center;
+}
+
+input[type=text], input[type=password], input[type=email]  {
+   width: 80%;
+}
