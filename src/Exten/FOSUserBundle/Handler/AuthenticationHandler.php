@@ -10,11 +10,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Translation\Translator;
 
 class AuthenticationHandler
 implements AuthenticationSuccessHandlerInterface,
            AuthenticationFailureHandlerInterface
 {
+    
+    protected $router;
+    protected $translator;
+
+    public function __construct($router, $translator)
+    {
+        $this->translator = $translator;
+        $this->router = $router;        
+    }
    
     /**
      * This is called when an interactive authentication attempt succeeds. This
@@ -50,7 +60,9 @@ implements AuthenticationSuccessHandlerInterface,
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($request->isXmlHttpRequest()) {
-            $result = array('success' => false, 'message' => $exception->getMessage());
+            $exception_message = $exception->getMessage();
+            $translated_message = $this->translator->trans($exception_message, array(), 'FOSUserBundle');
+            $result = array('success' => false, 'message' => $translated_message);
             $response = new Response(json_encode($result));
             $response->headers->set('Content-Type', 'application/json');
             return $response;

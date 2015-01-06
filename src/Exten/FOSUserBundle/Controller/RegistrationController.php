@@ -9,24 +9,59 @@ class RegistrationController extends Controller
 {
     public function registerAction()
     {   
-        return $this->render('ExtenFOSUserBundle:Registration:register.html.twig');
+        
+        $request = $this->getRequest();
+        
+        $formFactory = $this->get('fos_user.registration.form.factory');
+        $form = $formFactory->createForm();
+        $form->handleRequest($request);
+             
+        return $this->render('ExtenFOSUserBundle:Registration:register.html.twig', array(
+            'form' => $form->createView(),
+        ));
         
     }
     
     public function ajaxRegisterAction()
     {            
+        
         $request = $this->getRequest();
         
-        //if ($request->isXmlHttpRequest()) {
-                                    
-            $result = array('success' => false, 'message' => 'works');
+        if ($request->isXmlHttpRequest()) {
+        
+            $formFactory = $this->get('fos_user.registration.form.factory');
+            /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+            $userManager = $this->get('fos_user.user_manager');
+
+            $user = $userManager->createUser();
+            $user->setEnabled(true);
+
+            $form = $formFactory->createForm();
+            $form->setData($user);
+
+            $form->handleRequest($request);
+
+            $FormErrorIterator = $form->getErrors(true);            
             
-            $response = new Response(json_encode($result));
+            if($FormErrorIterator->count()){                    
+                $messages = preg_replace("/(\n)/", "<br/>", $FormErrorIterator->__toString());
+                $messages = preg_replace("/(ERROR: )/", "", $messages);
+                $result = array('success' => false, 'message' => $messages);
+            }else{
+                //If form is valid
+                $userManager->updateUser($user);
+                
+                $referer_url = $request->headers->get('referer');
+                $result = array('success' => true, 'url' => $referer_url);
+            }                                                                               
+        }else{
+            $result = array('success' => false, 'message' => array('This is not XmlHttpRequest'));
+        }                        
+        
+        $response = new Response(json_encode($result));
             
-            $response->headers->set('Content-Type', 'application/json');            
-            
-            return $response;
-            
-        //}                
+        $response->headers->set('Content-Type', 'application/json');     
+        
+        return $response;
     }
 }

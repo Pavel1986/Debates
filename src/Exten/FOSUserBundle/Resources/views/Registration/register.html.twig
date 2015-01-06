@@ -3,54 +3,91 @@
 <div id="RegForm">    
     {% trans_default_domain 'FOSUserBundle' %}
         
-        <div id="RegErrors">Errors</div>
+    <div id="RegErrors">
+        
+    </div>
     
         <script type="text/javascript">
 
-        $(document).ready(function(){
+        $(document).ready(function(){           
             
             
-            $("#registerButton").click( function(){
-
+            $("#RegForm").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 380,
+                title: "{{ 'security.register.title'|trans }}"
+            });
+            
+            $('.fos_user_registration_register').find("._reset").click(function() {
+                $('#fos_user_registration_form_email').val("");
+                $('#fos_user_registration_form_username').val("");
+                $('#fos_user_registration_form_plainPassword_first').val("");
+                $('#fos_user_registration_form_plainPassword_second').val("");                       
+            });
+        
+            $('.fos_user_registration_register').find("._close").click(function() {
+                $("#RegForm").dialog( "close" );                       
+            });
+        
+            $(".fos_user_registration_register").submit( function(event){
+                               
+                event.preventDefault();
                 $.ajax({
                     type        : $('form').attr( 'method' ),
                     url         : '{{ path('exten_fos_user_register_check') }}',
                     data        : $('.fos_user_registration_register').serialize(),
                     dataType    : "json",
-                    success     : function(data) {
-                            $('#RegErrors').html(data.message) 
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                                $('#RegErrors').html('<br />' + data.message + '<br />');           
+                        } else if(data.success == true){
+                            window.location.replace(data.url);
+                        };
                     },
-                    error: function(data){
-                        $('#RegErrors').html(data);
+                    error: function(data, status, object){
+                        console.log(data.message);
                     }
                 });
-            });               
+            });  
+            
+            $('#RegisterBtn').click(function(ev){
+                $("#RegForm").dialog("open");
+            });
+
+            $("#RegisterBtn").button();
+    
         });
         
     </script>
-
+   
     <form method="post" class="fos_user_registration_register">              
         
         <div id="fos_user_registration_form">
             <div>
-                <label for="fos_user_registration_form_email" class="required">Email:</label>
+                <label for="fos_user_registration_form_email" class="required">{{ 'form.email'|trans }}</label><br />
                 <input type="email" id="fos_user_registration_form_email" name="fos_user_registration_form[email]" required="required" />
             </div>
             <div>
-                <label for="fos_user_registration_form_username" class="required">Username:</label>
+                <label for="fos_user_registration_form_username" class="required">{{ 'form.username'|trans }}</label><br />
                 <input type="text" id="fos_user_registration_form_username" name="fos_user_registration_form[username]" required="required" pattern=".{2,}" />
             </div>
             <div>
-                <label for="fos_user_registration_form_plainPassword_first" class="required">Password:</label>
+                <label for="fos_user_registration_form_plainPassword_first" class="required">{{ 'form.password'|trans }}</label><br />
                 <input type="password" id="fos_user_registration_form_plainPassword_first" name="fos_user_registration_form[plainPassword][first]" required="required" />
             </div>
             <div>
-                <label for="fos_user_registration_form_plainPassword_second" class="required">Verification:</label>
+                <label for="fos_user_registration_form_plainPassword_second" class="required">{{ 'form.password_confirmation'|trans }}</label><br />
                 <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" />
             </div>                  
             <div>
-                <input id="registerButton" type="button" value="{{ 'registration.submit'|trans }}" />
+                {{ form_row(form._token) }}                
             </div>
+                    <br />
+        <hr />
+        <input type="submit" class="_submit" name="_submit" value="{{ 'registration.submit'|trans }}" />
+        <input type="button" class="_reset" value="{{ 'security.login.reset'|trans }}" />
+        <input type="button" class="_close" value="{{ 'security.login.close'|trans }}" />
         </div>
     </form>           
 

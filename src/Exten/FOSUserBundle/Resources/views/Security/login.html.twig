@@ -7,7 +7,28 @@
     <script type="text/javascript">
 
         $(document).ready(function(){
-            $('#_submit').click(function(e){
+            
+            $("#AuthForm").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 330,
+                title: "{{ 'security.login.title'|trans }}"
+            });
+
+            $('#LoginBtn').click(function(ev){
+                $("#AuthForm").dialog("open");
+            });
+
+            $("#LoginBtn").button();
+            
+            $('.fos_user_login_form ._reset').click(function() {
+                $(".fos_user_login_form").find('#username').val("");
+                $(".fos_user_login_form").find('#password').val("");                        
+            });
+            
+            $('.fos_user_login_form').submit(function(event){
+
+                event.preventDefault();
                 $.ajax({
                     type        : $('form').attr( 'method' ),
                     url         : '{{ path("fos_user_security_check") }}',
@@ -15,7 +36,7 @@
                     dataType    : "json",
                     success     : function(data, status, object) {
                         if(data.success == false){
-                            $('#AuthErrors').html(data.message) 
+                            $('#AuthErrors').html('<br />' + data.message + '<br /><br />') 
                         } else if(data.success == true){
                             window.location.replace(data.url);
                         };
@@ -25,6 +46,11 @@
                     }
                 });
             });
+            
+            $('.fos_user_login_form ._close').click(function() {
+                $("#AuthForm").dialog( "close" );                       
+            });
+            
         });
 
     </script>
@@ -33,15 +59,20 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
         <label for="username">{{ 'security.login.username'|trans }}</label>
+        <br />
         <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-
+        <br />
         <label for="password">{{ 'security.login.password'|trans }}</label>
+        <br />
         <input type="password" id="password" name="_password" required="required" />
-
+        <br />
         <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
         <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
-
-        <input type="button" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+        <br />
+        <hr />
+        <input type="submit" class="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+        <input type="button" class="_reset" value="{{ 'security.login.reset'|trans }}" />
+        <input type="button" class="_close" value="{{ 'security.login.close'|trans }}" />
     </form>
     
 </div>
