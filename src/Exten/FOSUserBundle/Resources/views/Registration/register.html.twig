@@ -10,6 +10,39 @@
         <script type="text/javascript">
 
         $(document).ready(function(){           
+            
+            
+            $("#RegForm").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 330,
+                buttons: {
+                    "Create": function() {
+
+                        var check_result = UserModule.CheckRegFields(name_length, password_length);
+
+                        if(check_result){
+
+                            var password = MD5($('#password_first').val());
+
+                            Socket.emit('Registration', {'Email' : $("#RegForm").find('#email').val(), 'Password' : password, 'Name' : $('#name').val()});
+
+                        }
+                    }
+                }
+            });
+            
+            $('.fos_user_registration_register ._reset').click(function() {
+                $("#RegForm").find('#email').val("");
+                $('#password_first').val("");
+                $('#password_second').val("");
+                $('#name').val("");                       
+            });
+        
+            $('.fos_user_registration_register._close').click(function() {
+                $("#RegForm").dialog( "close" );                       
+            });
+        
             $(".fos_user_registration_register").submit( function(event){
                 
                 event.preventDefault();
@@ -29,7 +62,14 @@
                         console.log(data.message);
                     }
                 });
-            });               
+            });  
+            
+            $('#RegisterBtn').click(function(ev){
+                $("#RegForm").dialog("open");
+            });
+
+            $("#RegisterBtn").button();
+    
         });
         
     </script>
@@ -54,11 +94,13 @@
                 <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" />
             </div>                  
             <div>
-                <input id="registerButton" type="submit" value="{{ 'registration.submit'|trans }}" />
-            </div>
-            <div>
                 {{ form_row(form._token) }}                
             </div>
+                    <br />
+        <hr />
+        <input type="submit" class="_submit" name="_submit" value="{{ 'registration.submit'|trans }}" />
+        <input type="button" class="_reset" value="{{ 'security.login.reset'|trans }}" />
+        <input type="button" class="_close" value="{{ 'security.login.close'|trans }}" />
         </div>
     </form>           
 

@@ -20,11 +20,8 @@
             });
 
             $("#LoginBtn").button();
-            $("#_submit").button();
-            $("#_reset").button();
-            $("#_close").button();
             
-            $('#_reset').click(function() {
+            $('.fos_user_login_form ._reset').click(function() {
                 $(".fos_user_login_form").find('#username').val("");
                 $(".fos_user_login_form").find('#password').val("");                        
             });
@@ -50,7 +47,7 @@
                 });
             });
             
-            $('#_close').click(function() {
+            $('.fos_user_login_form ._close').click(function() {
                 $("#AuthForm").dialog( "close" );                       
             });
             
@@ -73,9 +70,9 @@
         <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
         <br />
         <hr />
-        <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-        <input type="button" id="_reset" value="{{ 'security.login.reset'|trans }}" />
-        <input type="button" id="_close" value="{{ 'security.login.close'|trans }}" />
+        <input type="submit" class="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+        <input type="button" class="_reset" value="{{ 'security.login.reset'|trans }}" />
+        <input type="button" class="_close" value="{{ 'security.login.close'|trans }}" />
     </form>
     
 </div>
