@@ -43,8 +43,10 @@ class RegistrationController extends Controller
 
             $FormErrorIterator = $form->getErrors(true);            
             
-            if($FormErrorIterator->count()){                                
-                $result = array('success' => false, 'message' => $FormErrorIterator->__toString());
+            if($FormErrorIterator->count()){                    
+                $messages = preg_replace("/(\n)/", "<br/>", $FormErrorIterator->__toString());
+                $messages = preg_replace("/(ERROR: )/", "", $messages);
+                $result = array('success' => false, 'message' => $messages);
             }else{
                 //If form is valid
                 $userManager->updateUser($user);

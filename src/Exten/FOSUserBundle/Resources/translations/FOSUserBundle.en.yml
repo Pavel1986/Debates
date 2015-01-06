@@ -20,7 +20,9 @@ security:
         submit: Login
         close: Close
         reset: Reset
-        auth : Authorization
+        title : Authorization
+    register:
+        title : Registration
 
 # Profile
 profile:
@@ -40,6 +42,7 @@ change_password:
 
 # Registration
 registration:
+    title: Registration
     check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
     confirmed: Congrats %username%, your account is now activated.
     back: Back to the originating page.
@@ -96,5 +99,5 @@ form:
     new_password: "New password:"
     new_password_confirmation: "Verification:"
 
-"Bad credentials": "Авторизация прошла неуспешно"
+"Bad credentials": "Your login or password is wrong."
 "Invalid CSRF token.": "Please try to reload page. And to resubmit the form."

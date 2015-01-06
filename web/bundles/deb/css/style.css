@@ -24,7 +24,7 @@ img{
 #menu{
       display: inline;
 }
-.fos_user_login_form {
+.fos_user_login_form, #fos_user_registration_form {
     text-align: center;
 }
 

@@ -12,7 +12,7 @@
                 autoOpen: false,
                 modal: true,
                 width: 330,
-                title: "{{ 'security.login.auth'|trans }}"
+                title: "{{ 'security.login.title'|trans }}"
             });
 
             $('#LoginBtn').click(function(ev){
@@ -36,7 +36,7 @@
                     dataType    : "json",
                     success     : function(data, status, object) {
                         if(data.success == false){
-                            $('#AuthErrors').html(data.message) 
+                            $('#AuthErrors').html('<br />' + data.message + '<br /><br />') 
                         } else if(data.success == true){
                             window.location.replace(data.url);
                         };
