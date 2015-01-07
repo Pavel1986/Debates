@@ -11,6 +11,8 @@ class TopicsListController extends Controller
         
         $locale = $this->get('request')->getLocale();
         
-        return $this->render('DebTopicsBundle:TopicsList:topics_list.html.twig', array('locale' => $locale));
+        $host = $this->get('router')->getContext()->getHost();
+        
+        return $this->render('DebTopicsBundle:TopicsList:topics_list.html.twig', array('locale' => $locale, 'host' => $host));
     }        
 }

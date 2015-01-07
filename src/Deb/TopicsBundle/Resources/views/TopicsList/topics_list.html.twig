@@ -1,5 +1,14 @@
 {% extends '::debates/base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="http://{{ host }}:8080/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://{{ host }}:8080');        
+    </script>
+{% endblock %}
+
 {% block body %}
     Topics List      
     <br />
