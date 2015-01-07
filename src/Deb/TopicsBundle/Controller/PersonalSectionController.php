@@ -8,6 +8,12 @@ class PersonalSectionController extends Controller
 {
     public function indexAction()
     {            
-        return $this->render('DebTopicsBundle:PersonalSection:personal_section.html.twig', array());
+        
+        $securityContext = $this->container->get('security.context');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->render('DebTopicsBundle:PersonalSection:personal_section.html.twig', array());
+        }
+        
+        return $this->render('noneAuthorized.html.twig', array());
     }
 }
