@@ -1,15 +1,119 @@
 {% extends '::debates/base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/deb/css/topics-list.css') }}" rel="stylesheet" />
+    <style>
+        .custom-combobox {
+            position: relative;
+            display: inline-block;
+            padding-right: 50px;
+        }
+        .custom-combobox-input {
+            margin: 0;
+            padding: 0.3em;
+        }
+    </style>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
 
     <script src="http://{{ host }}:8080/socket.io/socket.io.js"></script>
+    <script src="{{ asset('bundles/deb/js/combobox.js') }}"></script>
     <script>
-        var socket = io.connect('http://{{ host }}:8080');        
+       /* var socket = io.connect('http://{{ host }}:8080');       */                
+        
+        $(function() {            
+            $("#RefreshTopicsList").button({
+                text: false,
+                icons: {
+                  primary: "ui-icon-refresh",
+                  label: ""
+                }                
+            });
+            
+            $("#CreateTopicForm").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "CreateTopic"
+            });
+            
+            $('#CreateTopicAjaxForm').submit(function(event){
+
+                event.preventDefault();
+                
+                $.ajax({
+                    type        : $('form').attr( 'method' ),
+                    url         : '{{ path('topic_create') }}',
+                    data        : $('#CreateTopicAjaxForm').serialize(),
+                    dataType    : "json",
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                            $('#CreateTopicErrors').html('<br />' + data.message + '<br /><br />') 
+                        } else if(data.success == true){
+                            window.location.replace(data.url);
+                        };                        
+                    },
+                    error: function(data, status, object){
+                        console.log(data.message);
+                    }
+                });
+            });
+            
+            $('#CreateTopicBtn').click(function(ev){
+                $("#CreateTopicForm").dialog("open");
+            });
+            
+            $("#CategoryList").combobox();
+            $("#StatusList").selectmenu(); 
+            $("#SortList").selectmenu();
+            $("#CreateTopicBtn").button();
+          });
     </script>
 {% endblock %}
 
 {% block body %}
+    
+        <div id="TopicsFilter">
+
+        <button id="RefreshTopicsList">Refresh topics list</button>
+
+        Category :
+        <select id="CategoryList">
+            <option value="All">All</option>
+            <option value="ActionScript">ActionScript</option>
+            <option value="AppleScript">AppleScript</option>
+            <option value="Asp">Asp</option>
+            <option value="BASIC">BASIC</option>
+            <option value="C">C</option>
+            <option value="C++">C++</option>
+            <option value="Clojure">Clojure</option>
+            <option value="COBOL">COBOL</option>
+            <option value="ColdFusion">ColdFusion</option>
+        </select>
+
+        Status :
+        <select id="StatusList">
+            <option value="All">All</option>
+            <option value="Opened">Opened</option>
+            <option value="Completed">Completed</option>
+            <option value="Closed">Closed</option>
+        </select>
+
+        Sorting :
+        <select id="SortList">
+            <option value="Date">Date</option>
+            <option value="popular">Most popular</option>
+            <option value="commented">Most commented</option>
+        </select>
+
+        
+        <button id="CreateTopicBtn">Create topic</button>
+        
+
+    </div>
     <br />
     Current locale : {{ locale }}    
     <br />
@@ -24,6 +128,15 @@
             </ul>
 
     {% endfor %}        
+    </div>
+    
+    <div id="CreateTopicForm">
+        <div id="CreateTopicErrors"></div>
+        <form id="CreateTopicAjaxForm" method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+
+            <input type="submit" class="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+        </form>
     </div>
     
 {% endblock %}

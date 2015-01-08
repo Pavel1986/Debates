@@ -13,3 +13,7 @@ info_page:
 personal_section:
     path:     /personal
     defaults: { _controller: DebTopicsBundle:PersonalSection:index }   
+    
+topic_create:
+    path:     /create
+    defaults: { _controller: DebTopicsBundle:TopicsList:create }   
