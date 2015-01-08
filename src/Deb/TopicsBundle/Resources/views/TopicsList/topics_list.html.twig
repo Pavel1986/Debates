@@ -10,7 +10,20 @@
 {% endblock %}
 
 {% block body %}
-    Topics List      
     <br />
-    Current locale : {{ locale }}
+    Current locale : {{ locale }}    
+    <br />
+    
+    <div>
+        {% for topic in topics %}
+          
+            <ul>
+                <li>id : {{ topic.id }}</li>
+                <li>name : {{ topic.name }}</li>
+                <li>description : {{ topic.description }}</li>
+            </ul>
+
+    {% endfor %}        
+    </div>
+    
 {% endblock %}
