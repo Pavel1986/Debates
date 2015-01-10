@@ -3,6 +3,7 @@
 namespace Deb\TopicsBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @MongoDB\Document
@@ -16,11 +17,25 @@ class Topic
     
     /**
      * @MongoDB\String
+     * @Assert\NotBlank( message = "topic.form_create.name.blank")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 50,
+     *      minMessage = "topic.form_create.name.min",
+     *      maxMessage = "topic.form_create.name.max"
+     * )
      */
     protected $name;
     
     /**
      * @MongoDB\String
+     * @Assert\NotBlank( message = "topic.form_create.description.blank" )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 50,
+     *      minMessage = "topic.form_create.description.min",
+     *      maxMessage = "topic.form_create.description.max"
+     * )
      */
     protected $description;
     

@@ -3,3 +3,12 @@ menu:
     detail: "Детальная"
     info  : "Информация"
     personal : "Персональный раздел"
+    
+topic:
+    create:
+        title: "Создание обсуждения"
+        button: "Создать обсуждение"
+
+topic_filter:
+    refresh_button: "Обновить список обсуждений"
+        

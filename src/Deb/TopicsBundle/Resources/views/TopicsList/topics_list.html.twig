@@ -1,4 +1,5 @@
 {% extends '::debates/base.html.twig' %}
+{% trans_default_domain 'DebTopicsBundle' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -37,7 +38,7 @@
             $("#CreateTopicForm").dialog({
                 autoOpen: false,
                 modal: true,
-                title: "CreateTopic"
+                title: "{{ 'topic.create.title'|trans }}"
             });
             
             $('#CreateTopicAjaxForm').submit(function(event){
@@ -75,10 +76,10 @@
 {% endblock %}
 
 {% block body %}
-    
+               
         <div id="TopicsFilter">
 
-        <button id="RefreshTopicsList">Refresh topics list</button>
+        <button id="RefreshTopicsList">{{ 'topic_filter.refresh_button'|trans }}</button>
 
         Category :
         <select id="CategoryList">
@@ -110,7 +111,7 @@
         </select>
 
         
-        <button id="CreateTopicBtn">Create topic</button>
+        <button id="CreateTopicBtn">{{ 'topic.create.button'|trans }}</button>
         
 
     </div>
@@ -134,7 +135,6 @@
         <div id="CreateTopicErrors"></div>
         <form id="CreateTopicAjaxForm" method="post" {{ form_enctype(form) }}>
             {{ form_widget(form) }}
-
             <input type="submit" class="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
         </form>
     </div>

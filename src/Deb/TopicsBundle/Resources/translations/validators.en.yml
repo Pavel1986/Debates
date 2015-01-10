@@ -1,0 +1,11 @@
+# validators.en.yml
+topic :
+    form_create :
+        name :
+            blank : Name should not be blank
+            min : Your name must be at least {{ limit }} characters long
+            max : Your name cannot be longer than {{ limit }} characters long
+        description:
+            blank : Description should not be blank
+            min : Your description must be at least {{ limit }} characters long
+            max : Your description cannot be longer than {{ limit }} characters long
