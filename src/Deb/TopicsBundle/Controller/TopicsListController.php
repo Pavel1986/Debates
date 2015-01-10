@@ -40,26 +40,28 @@ class TopicsListController extends Controller
             if ($form->isValid()) {
             
                 $messages = 'All works';
-            
-                /*Надо из запроса получить форму
-                Проверить её - надо добавить валидацию и возрат сообщений об ошибках
-                После чего получаем сущность для записи в базу данных - сделал
-                Отдаём ответ - сделал
-                */
-               
+                           
                 //Сохраняем в базу данных
                 $dm = $this->get('doctrine_mongodb')->getManager();
                 $dm->persist($topic);
                 $dm->flush();
                 
                 //Возвращаем ответ
-                $result = array('success' => false, 'message' => $messages);                                
-                $response = new Response(json_encode($result));
-                $response->headers->set('Content-Type', 'application/json');     
-
-                return $response;
+                //$result = array('success' => false, 'message' => 'Topic created');                                                
+                $referer_url = $request->headers->get('referer');
+                $result = array('success' => true, 'url' => $referer_url);
             
+            }else{
+                $FormErrorIterator = $form->getErrors(true);                        
+                $messages = preg_replace("/(\n)/", "<br/>", $FormErrorIterator->__toString());
+                $messages = preg_replace("/(ERROR: )/", "", $messages);
+                $result = array('success' => false, 'message' => $messages);                                  
             }
+            
+            $response = new Response(json_encode($result));
+            $response->headers->set('Content-Type', 'application/json');     
+
+            return $response;
         
         }
         

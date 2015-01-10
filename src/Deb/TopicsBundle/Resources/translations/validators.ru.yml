@@ -1,0 +1,11 @@
+# validators.ru.yml
+topic :
+    form_create :
+        name :
+            blank : Название обсуждения не может быть пустым
+            min : Название обсуждения должно быть минимум {{ limit }} символов
+            max : Название обсуждения должно быть максимум {{ limit }} символов
+        description:
+            blank : Description should not be blank
+            min : Описание обсуждения должно быть минимум {{ limit }} символов
+            max : Описание обсуждения должно быть максимум {{ limit }} символов
