@@ -24,10 +24,14 @@ img{
 #menu{
       display: inline;
 }
-.fos_user_login_form, #fos_user_registration_form {
+.fos_user_login_form, #fos_user_registration_form, #CreateTopicForm {
     text-align: center;
 }
 
-input[type=text], input[type=password], input[type=email]  {
-   width: 80%;
+input[type=text], input[type=password], input[type=email], #CreateTopicForm textarea  {
+   width: 90%;
+}
+
+#CreateTopicForm textarea {
+    min-height: 150px;
 }

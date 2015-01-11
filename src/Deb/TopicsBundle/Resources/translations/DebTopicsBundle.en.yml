@@ -8,6 +8,9 @@ topic:
     create:
         title: "Topic creation"
         button: "Create topic"
+        name: "Title"
+        description: "Description"
+        close: "Close"
 
 topic_filter:
-    refresh_button: "Обновить список обсуждений"        
+    refresh_button: "Refresh topics list"
