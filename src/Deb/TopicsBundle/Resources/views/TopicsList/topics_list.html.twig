@@ -128,6 +128,7 @@
         {% for topic in topics %}
           
             <ul>
+                <li>date : {{ topic.dateCreated|date('Y-m-d H:i:s') }}</li>
                 <li>id : {{ topic.id }}</li>
                 <li>name : {{ topic.name }}</li>
                 <li>description : {{ topic.description }}</li>
