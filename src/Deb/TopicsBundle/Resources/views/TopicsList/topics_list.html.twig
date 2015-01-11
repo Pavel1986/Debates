@@ -3,7 +3,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-
+    
     <link href="{{ asset('bundles/deb/css/topics-list.css') }}" rel="stylesheet" />
     <style>
         .custom-combobox {
@@ -38,7 +38,8 @@
             $("#CreateTopicForm").dialog({
                 autoOpen: false,
                 modal: true,
-                title: "{{ 'topic.create.title'|trans }}"
+                title: "{{ 'topic.create.title'|trans }}", 
+                width: "50%"
             });
             
             $('#CreateTopicAjaxForm').submit(function(event){
@@ -65,6 +66,10 @@
             
             $('#CreateTopicBtn').click(function(ev){
                 $("#CreateTopicForm").dialog("open");
+            });
+            
+            $('#CreateTopicAjaxForm ._close').click(function() {
+                $("#CreateTopicForm").dialog( "close" );                      
             });
             
             $("#CategoryList").combobox();
@@ -123,6 +128,7 @@
         {% for topic in topics %}
           
             <ul>
+                <li>date : {{ topic.dateCreated|date('Y-m-d H:i:s') }}</li>
                 <li>id : {{ topic.id }}</li>
                 <li>name : {{ topic.name }}</li>
                 <li>description : {{ topic.description }}</li>
@@ -134,8 +140,22 @@
     <div id="CreateTopicForm">
         <div id="CreateTopicErrors"></div>
         <form id="CreateTopicAjaxForm" method="post" {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
-            <input type="submit" class="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+            
+            <div id="deb_topic_create">
+                <div>
+                    <label for="deb_topic_create_name" class="required">{{ 'topic.create.name'|trans }}</label><br />
+                    <input id="deb_topic_create_name" name="deb_topic_create[name]" required="required" type="text">
+                </div>
+                <div>
+                    <label for="deb_topic_create_description" class="required">{{ 'topic.create.description'|trans }}</label><br />
+                    <textarea id="deb_topic_create_description" name="deb_topic_create[description]" required="required"></textarea>
+                </div>
+                {{ form_row(form._token) }}
+            </div>
+            <br />
+            <hr />
+            <input type="submit" class="_submit" name="_submit" value="{{ 'topic.create.button'|trans }}" />
+            <input type="button" class="_close" value="{{ 'topic.create.close'|trans }}" />
         </form>
     </div>
     

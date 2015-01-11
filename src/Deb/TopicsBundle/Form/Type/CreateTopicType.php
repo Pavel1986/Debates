@@ -10,8 +10,8 @@ class CreateTopicType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text');
-        $builder->add('description', 'textarea');                    
+        $builder->add('name', 'text', ['label' => 'topic.create.name', 'translation_domain' => 'DebTopicsBundle']);
+        $builder->add('description', 'textarea', ['label' => 'topic.create.description', 'translation_domain' => 'DebTopicsBundle']);  
     }
 
     public function getName()

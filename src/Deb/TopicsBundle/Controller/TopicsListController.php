@@ -38,11 +38,11 @@ class TopicsListController extends Controller
              $form->handleRequest($request);
 
             if ($form->isValid()) {
-            
-                $messages = 'All works';
-                           
+                                      
                 //Сохраняем в базу данных
-                $dm = $this->get('doctrine_mongodb')->getManager();
+                $current = new \DateTime();
+                $topic->setDateCreated($current);
+                $dm = $this->get('doctrine_mongodb')->getManager();                
                 $dm->persist($topic);
                 $dm->flush();
                 

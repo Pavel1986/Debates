@@ -8,7 +8,9 @@ topic:
     create:
         title: "Создание обсуждения"
         button: "Создать обсуждение"
+        name: "Заголовок"
+        description: "Описание"
+        close: "Закрыть"
 
 topic_filter:
     refresh_button: "Обновить список обсуждений"
-        
