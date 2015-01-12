@@ -57,7 +57,6 @@
                     <div id="menu">
 
                         <a href="{{ path('topics_list') }}">     {{ 'menu.index'    |trans({}, 'DebTopicsBundle') }}</a>
-                        <a href="{{ path('topic_detail') }}">    {{ 'menu.detail'   |trans({}, 'DebTopicsBundle') }}</a>
                         <a href="{{ path('info_page') }}">       {{ 'menu.info'     |trans({}, 'DebTopicsBundle') }}</a>
                         {% if app.user %}
                             <a href="{{ path('personal_section') }}">{{ 'menu.personal' |trans({}, 'DebTopicsBundle') }}</a>

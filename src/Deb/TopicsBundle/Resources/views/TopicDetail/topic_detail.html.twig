@@ -1,9 +1,94 @@
 {% extends '::debates/base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link href="{{ asset('bundles/deb/css/topic-detail.css') }}" rel="stylesheet" />
+    
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="http://{{ host }}:8080/socket.io/socket.io.js"></script>
+    <script src="{{ asset('bundles/deb/js/socket.js') }}"></script>
+    <script>
+        var socket = io.connect('http://{{ host }}:8080');
+        $(function() { 
+            $("#TopicDetail").find("#JoinTopic").click(function () {        
+            socket.emit('join', { topic : "{{ topic.id }}" });
+        });
+        
+            $("#TopicDetail").find("#Send").click(function () {        
+            socket.emit('message', { topic : "{{ topic.id }}", message : $("#TextField").val() });
+        });
+    });
+        
+    </script>
+    
+{% endblock %}
+
 {% block body %}
-   Topic Detail
-   <br />
-   Current locale : {{ locale }}
+    
+    {% if topic is not null %}                                    
+    
+        {% if topic.dateCreated is not null %}
+            <li>date : {{ topic.dateCreated|date('Y-m-d H:i:s') }}</li>
+        {% endif %}
+        <li>id : {{ topic.id }}</li>
+        <li>name : {{ topic.name }}</li>
+        <li>description : {{ topic.description }}</li>
+        <li>status : {{ topic.statusCode }}</li>
+        
+        <div id="TopicDetail">
+            <div id="TopicDetailTitle">
+                <span class="TopicStatus">Topic.Category.Value :: </span>Topic.Author.Name : {{ topic.name }}
+                <span id="BackLink"><a href="">Back to list</a></span>
+            </div>
+            <div id="TopicDetailDescription">
+                Описание : {{ topic.description }}
+            </div>
+
+            <form>
+
+                <div id="ChatBox" style="border: 1px solid green">
+                    <div id="MessagesList">
+                        {#    {{ for(var TopicMessage in it.TopicMessages) { }}
+                            <p>{{=it.TopicMessages[TopicMessage].Message}}</p>
+                        {{ } }} #}
+                    </div>
+                    <div id="VisitorsDiv">
+                        <div>Visitors list :</div>
+                        <div id="VisitorsList">
+                            <ul>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                
+                    <input id="JoinTopic" type="button" value="Join topic">
+                
+
+                
+                    <div id="SendDiv">
+                        <input id="TextField" type="text" style="width: 250px"><input id="Send" type="button" value="Send">
+                    </div>
+                
+
+                <br /><br />
+                
+
+            </form>
+        </div>
    
+   {% else %}  
+       
+       Topic not found
+       
+       
+   {% endif %}   
    
 {% endblock %}

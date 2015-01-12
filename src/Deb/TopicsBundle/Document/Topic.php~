@@ -60,6 +60,11 @@ class Topic
     protected $date_closed;
     
     /**
+     * @MongoDB\String
+     */
+    protected $status_code;
+    
+    /**
      * Get id
      *
      * @return id $id
