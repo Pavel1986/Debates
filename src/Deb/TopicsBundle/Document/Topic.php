@@ -60,6 +60,11 @@ class Topic
     protected $date_closed;
     
     /**
+     * @MongoDB\String
+     */
+    protected $status_code;
+    
+    /**
      * Get id
      *
      * @return id $id
@@ -199,5 +204,27 @@ class Topic
     public function getDateClosed()
     {
         return $this->date_closed;
+    }
+
+    /**
+     * Set statusCode
+     *
+     * @param string $statusCode
+     * @return self
+     */
+    public function setStatusCode($statusCode)
+    {
+        $this->status_code = $statusCode;
+        return $this;
+    }
+
+    /**
+     * Get statusCode
+     *
+     * @return string $statusCode
+     */
+    public function getStatusCode()
+    {
+        return $this->status_code;
     }
 }

@@ -127,12 +127,15 @@
     <div>
         {% for topic in topics %}
           
+            <a href="{{ path('topic_detail', {'id': topic.id}) }}">
             <ul>
-                <li>date : {{ topic.dateCreated|date('Y-m-d H:i:s') }}</li>
-                <li>id : {{ topic.id }}</li>
+                {% if topic.dateCreated is not null %}
+                    <li>date : {{ topic.dateCreated|date('Y-m-d H:i:s') }}</li>
+                {% endif %}
                 <li>name : {{ topic.name }}</li>
-                <li>description : {{ topic.description }}</li>
+                <li>status : {{ topic.statusCode }}</li>
             </ul>
+            </a>
 
     {% endfor %}        
     </div>

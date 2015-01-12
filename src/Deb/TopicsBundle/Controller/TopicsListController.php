@@ -14,7 +14,7 @@ class TopicsListController extends Controller
         //Getting topics
         $topics = $this->get('doctrine_mongodb')
         ->getRepository('DebTopicsBundle:Topic')
-        ->findAll();              
+        ->findAll();
 
         //For generation links (socket.io)
         $locale = $this->get('request')->getLocale();        
@@ -42,6 +42,7 @@ class TopicsListController extends Controller
                 //Сохраняем в базу данных
                 $current = new \DateTime();
                 $topic->setDateCreated($current);
+                $topic->setStatusCode('waiting');
                 $dm = $this->get('doctrine_mongodb')->getManager();                
                 $dm->persist($topic);
                 $dm->flush();
