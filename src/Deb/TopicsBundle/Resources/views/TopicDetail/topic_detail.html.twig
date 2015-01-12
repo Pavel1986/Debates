@@ -15,12 +15,11 @@
     <script>
         var socket = io.connect('http://{{ host }}:8080');
         $(function() { 
-            $("#TopicDetail").find("#JoinTopic").click(function () {        
-            socket.emit('join', { topic : "{{ topic.id }}" });
-        });
+            
+            var data = socket.emit('join', { topic_id : "{{ topic.id }}" });
         
             $("#TopicDetail").find("#Send").click(function () {        
-            socket.emit('message', { topic : "{{ topic.id }}", message : $("#TextField").val() });
+            socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
         });
     });
         
