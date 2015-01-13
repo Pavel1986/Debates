@@ -10,6 +10,7 @@ topic:
         button: "Создать обсуждение"
         name: "Заголовок"
         description: "Описание"
+        time_options: "Время обсуждения"
         close: "Закрыть"
 
 topic_filter:

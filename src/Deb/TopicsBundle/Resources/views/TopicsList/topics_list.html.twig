@@ -153,6 +153,10 @@
                     <label for="deb_topic_create_description" class="required">{{ 'topic.create.description'|trans }}</label><br />
                     <textarea id="deb_topic_create_description" name="deb_topic_create[description]" required="required"></textarea>
                 </div>
+                <div>
+                {{ form_label(form.topic_time) }}
+                {{ form_widget(form.topic_time) }}                
+                </div>
                 {{ form_row(form._token) }}
             </div>
             <br />

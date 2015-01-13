@@ -10,6 +10,7 @@ topic:
         button: "Create topic"
         name: "Title"
         description: "Description"
+        time_options: "Topic time"        
         close: "Close"
 
 topic_filter:

@@ -39,9 +39,9 @@ class TopicsListController extends Controller
 
             if ($form->isValid()) {
                                       
-                //Сохраняем в базу данных
+                //Сохраняем в базу данных                                
                 $topic->setDateCreated(time());
-                $topic->setStatusCode('waiting');
+                $topic->setStatusCode('waiting');                
                 $dm = $this->get('doctrine_mongodb')->getManager();                
                 $dm->persist($topic);
                 $dm->flush();

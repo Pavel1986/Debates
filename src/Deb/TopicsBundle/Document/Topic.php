@@ -64,6 +64,13 @@ class Topic
      */
     protected $status_code;
     
+    protected $time_options = array("10" => 10, "20" => 20, "30" => 30);
+    
+    /**
+     * @MongoDB\Int
+     */
+    protected $topic_time;
+    
     /**
      * Get id
      *
@@ -226,5 +233,37 @@ class Topic
     public function getDateClosed()
     {
         return $this->date_closed;
+    }
+
+    /**
+     * Set topicTime
+     *
+     * @param int $topicTime
+     * @return self
+     */
+    public function setTopicTime($topicTime)
+    {
+        $this->topic_time = $topicTime;
+        return $this;
+    }
+
+    /**
+     * Get topicTime
+     *
+     * @return int $topicTime
+     */
+    public function getTopicTime()
+    {
+        return $this->topic_time;
+    }
+    
+    /**
+     * Get timeOptions
+     *
+     * @return array $timeOptions
+     */
+    public function getTimeOptions()
+    {
+        return $this->time_options;
     }
 }

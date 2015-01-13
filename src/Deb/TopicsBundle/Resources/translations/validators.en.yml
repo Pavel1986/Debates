@@ -9,3 +9,4 @@ topic :
             blank : Description should not be blank
             min : Your description must be at least {{ limit }} characters long
             max : Your description cannot be longer than {{ limit }} characters long
+        time_options: Topic time is not valid
