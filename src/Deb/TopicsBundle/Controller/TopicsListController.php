@@ -40,8 +40,7 @@ class TopicsListController extends Controller
             if ($form->isValid()) {
                                       
                 //Сохраняем в базу данных
-                $current = new \DateTime();
-                $topic->setDateCreated($current);
+                $topic->setDateCreated(time());
                 $topic->setStatusCode('waiting');
                 $dm = $this->get('doctrine_mongodb')->getManager();                
                 $dm->persist($topic);

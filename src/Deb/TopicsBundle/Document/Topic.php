@@ -45,17 +45,17 @@ class Topic
     protected $author_id;
     
     /**
-     * @MongoDB\Date
+     * @MongoDB\String
      */
     protected $date_created;
     
     /**
-     * @MongoDB\Date
+     * @MongoDB\String
      */
     protected $date_started;
     
     /**
-     * @MongoDB\Date
+     * @MongoDB\String
      */
     protected $date_closed;
     
@@ -138,73 +138,7 @@ class Topic
     public function getAuthorId()
     {
         return $this->author_id;
-    }
-
-    /**
-     * Set dateCreated
-     *
-     * @param date $dateCreated
-     * @return self
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->date_created = $dateCreated;
-        return $this;
-    }
-
-    /**
-     * Get dateCreated
-     *
-     * @return date $dateCreated
-     */
-    public function getDateCreated()
-    {
-        return $this->date_created;
-    }
-
-    /**
-     * Set dateStarted
-     *
-     * @param date $dateStarted
-     * @return self
-     */
-    public function setDateStarted($dateStarted)
-    {
-        $this->date_started = $dateStarted;
-        return $this;
-    }
-
-    /**
-     * Get dateStarted
-     *
-     * @return date $dateStarted
-     */
-    public function getDateStarted()
-    {
-        return $this->date_started;
-    }
-
-    /**
-     * Set dateClosed
-     *
-     * @param date $dateClosed
-     * @return self
-     */
-    public function setDateClosed($dateClosed)
-    {
-        $this->date_closed = $dateClosed;
-        return $this;
-    }
-
-    /**
-     * Get dateClosed
-     *
-     * @return date $dateClosed
-     */
-    public function getDateClosed()
-    {
-        return $this->date_closed;
-    }
+    }   
 
     /**
      * Set statusCode
@@ -226,5 +160,71 @@ class Topic
     public function getStatusCode()
     {
         return $this->status_code;
+    }
+
+    /**
+     * Set dateCreated
+     *
+     * @param string $dateCreated
+     * @return self
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->date_created = $dateCreated;
+        return $this;
+    }
+
+    /**
+     * Get dateCreated
+     *
+     * @return string $dateCreated
+     */
+    public function getDateCreated()
+    {
+        return $this->date_created;
+    }
+
+    /**
+     * Set dateStarted
+     *
+     * @param string $dateStarted
+     * @return self
+     */
+    public function setDateStarted($dateStarted)
+    {
+        $this->date_started = $dateStarted;
+        return $this;
+    }
+
+    /**
+     * Get dateStarted
+     *
+     * @return string $dateStarted
+     */
+    public function getDateStarted()
+    {
+        return $this->date_started;
+    }
+
+    /**
+     * Set dateClosed
+     *
+     * @param string $dateClosed
+     * @return self
+     */
+    public function setDateClosed($dateClosed)
+    {
+        $this->date_closed = $dateClosed;
+        return $this;
+    }
+
+    /**
+     * Get dateClosed
+     *
+     * @return string $dateClosed
+     */
+    public function getDateClosed()
+    {
+        return $this->date_closed;
     }
 }
