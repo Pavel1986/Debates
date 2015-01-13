@@ -46,31 +46,59 @@ class Topic
     
     /**
      * @MongoDB\String
+     * Дата создания обсуждения, в этот момент у обсуждения статус waiting, следующий через $waiting_time минут будет processing
      */
     protected $date_created;
     
     /**
      * @MongoDB\String
+     * Дата начала обсуждения, в этот момент у обсуждения статус processing, следующий через $processing_time минут (если участники не продлят время или не закончат раньше) будет closed
      */
     protected $date_started;
     
     /**
      * @MongoDB\String
+     * Дата конечного закрытия обсуждения, в этот момент у обсуждения статус closed
      */
     protected $date_closed;
     
     /**
      * @MongoDB\String
+     * Запланированная дата окончания обсуждения. Может меняться, если участники захотят продлить обсуждение или досрочно закончить
+     */
+    protected $date_temp_closing;
+    
+    /**
+     * @MongoDB\String
+     * Текущий статус обсуждения
      */
     protected $status_code;
     
-    protected $time_options = array("10" => 10, "20" => 20, "30" => 30);
+    /**
+     *@MongoDB\Hash
+     * Варианты значения $processing_time при создании обсуждения
+     */
+    protected $processing_time_options = array("10" => 10, "20" => 20, "30" => 30);
     
     /**
      * @MongoDB\Int
+     * Время обсуждения в статусе processing
      */
-    protected $topic_time;
+    protected $processing_time;
     
+    /**
+     * @MongoDB\Int
+     * Время в ожидании, когда появятся остальные участники обсуждения
+     */
+    protected $waiting_time;
+    
+    /**
+     * @MongoDB\Hash
+     * Варианты значения $waiting_time при создании обсуждения
+     */
+    protected $waiting_time_options = array("5" => 5, "10" => 10, "15" => 15);
+            
+
     /**
      * Get id
      *
@@ -145,28 +173,6 @@ class Topic
     public function getAuthorId()
     {
         return $this->author_id;
-    }   
-
-    /**
-     * Set statusCode
-     *
-     * @param string $statusCode
-     * @return self
-     */
-    public function setStatusCode($statusCode)
-    {
-        $this->status_code = $statusCode;
-        return $this;
-    }
-
-    /**
-     * Get statusCode
-     *
-     * @return string $statusCode
-     */
-    public function getStatusCode()
-    {
-        return $this->status_code;
     }
 
     /**
@@ -236,34 +242,134 @@ class Topic
     }
 
     /**
-     * Set topicTime
+     * Set dateTempClosing
      *
-     * @param int $topicTime
+     * @param string $dateTempClosing
      * @return self
      */
-    public function setTopicTime($topicTime)
+    public function setDateTempClosing($dateTempClosing)
     {
-        $this->topic_time = $topicTime;
+        $this->date_temp_closing = $dateTempClosing;
         return $this;
     }
 
     /**
-     * Get topicTime
+     * Get dateTempClosing
      *
-     * @return int $topicTime
+     * @return string $dateTempClosing
      */
-    public function getTopicTime()
+    public function getDateTempClosing()
     {
-        return $this->topic_time;
+        return $this->date_temp_closing;
     }
-    
+
     /**
-     * Get timeOptions
+     * Set statusCode
      *
-     * @return array $timeOptions
+     * @param string $statusCode
+     * @return self
      */
-    public function getTimeOptions()
+    public function setStatusCode($statusCode)
     {
-        return $this->time_options;
+        $this->status_code = $statusCode;
+        return $this;
+    }
+
+    /**
+     * Get statusCode
+     *
+     * @return string $statusCode
+     */
+    public function getStatusCode()
+    {
+        return $this->status_code;
+    }
+
+    /**
+     * Set processingTimeOptions
+     *
+     * @param hash $processingTimeOptions
+     * @return self
+     */
+    public function setProcessingTimeOptions($processingTimeOptions)
+    {
+        $this->processing_time_options = $processingTimeOptions;
+        return $this;
+    }
+
+    /**
+     * Get processingTimeOptions
+     *
+     * @return hash $processingTimeOptions
+     */
+    public function getProcessingTimeOptions()
+    {
+        return $this->processing_time_options;
+    }
+
+    /**
+     * Set processingTime
+     *
+     * @param int $processingTime
+     * @return self
+     */
+    public function setProcessingTime($processingTime)
+    {
+        $this->processing_time = $processingTime;
+        return $this;
+    }
+
+    /**
+     * Get processingTime
+     *
+     * @return int $processingTime
+     */
+    public function getProcessingTime()
+    {
+        return $this->processing_time;
+    }
+
+    /**
+     * Set waitingTime
+     *
+     * @param int $waitingTime
+     * @return self
+     */
+    public function setWaitingTime($waitingTime)
+    {
+        $this->waiting_time = $waitingTime;
+        return $this;
+    }
+
+    /**
+     * Get waitingTime
+     *
+     * @return int $waitingTime
+     */
+    public function getWaitingTime()
+    {
+        return $this->waiting_time;
+    }
+
+    /**
+     * Set waitingTimeOptions
+     *
+     * @param hash $waitingTimeOptions
+     * @return self
+     */
+    public function setWaitingTimeOptions($waitingTimeOptions)
+    {
+        $this->waiting_time_options = $waitingTimeOptions;
+        return $this;
+    }
+
+    /**
+     * Get waitingTimeOptions
+     *
+     * @return hash $waitingTimeOptions
+     */
+    public function getWaitingTimeOptions()
+    {
+        return $this->waiting_time_options;
     }
 }

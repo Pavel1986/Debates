@@ -46,214 +46,56 @@ class Topic
     
     /**
      * @MongoDB\String
+     * Дата создания обсуждения, в этот момент у обсуждения статус waiting, следующий через $waiting_time минут будет processing
      */
     protected $date_created;
     
     /**
      * @MongoDB\String
+     * Дата начала обсуждения, в этот момент у обсуждения статус processing, следующий через $processing_time минут (если участники не продлят время или не закончат раньше) будет closed
      */
     protected $date_started;
     
     /**
      * @MongoDB\String
+     * Дата конечного закрытия обсуждения, в этот момент у обсуждения статус closed
      */
     protected $date_closed;
     
     /**
      * @MongoDB\String
+     * Запланированная дата окончания обсуждения. Может меняться, если участники захотят продлить обсуждение или досрочно закончить
+     */
+    protected $date_temp_closing;
+    
+    /**
+     * @MongoDB\String
+     * Текущий статус обсуждения
      */
     protected $status_code;
     
-    protected $time_options = array(10, 20, 30);
+    /**
+     *@MongoDB\Hash
+     * Варианты значения $processing_time при создании обсуждения
+     */
+    protected $processing_time_options = array("10" => 10, "20" => 20, "30" => 30);
     
     /**
      * @MongoDB\Int
+     * Время обсуждения в статусе processing
      */
-    protected $topic_time;
+    protected $processing_time;
     
     /**
-     * Get id
-     *
-     * @return id $id
+     * @MongoDB\Int
+     * Время в ожидании, когда появятся остальные участники обсуждения
      */
-    public function getId()
-    {
-        return $this->id;
-    }
-
+    protected $waiting_time;
+    
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return self
+     * @MongoDB\Hash
+     * Варианты значения $waiting_time при создании обсуждения
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string $name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return self
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string $description
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set authorId
-     *
-     * @param object_id $authorId
-     * @return self
-     */
-    public function setAuthorId($authorId)
-    {
-        $this->author_id = $authorId;
-        return $this;
-    }
-
-    /**
-     * Get authorId
-     *
-     * @return object_id $authorId
-     */
-    public function getAuthorId()
-    {
-        return $this->author_id;
-    }   
-
-    /**
-     * Set statusCode
-     *
-     * @param string $statusCode
-     * @return self
-     */
-    public function setStatusCode($statusCode)
-    {
-        $this->status_code = $statusCode;
-        return $this;
-    }
-
-    /**
-     * Get statusCode
-     *
-     * @return string $statusCode
-     */
-    public function getStatusCode()
-    {
-        return $this->status_code;
-    }
-
-    /**
-     * Set dateCreated
-     *
-     * @param string $dateCreated
-     * @return self
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->date_created = $dateCreated;
-        return $this;
-    }
-
-    /**
-     * Get dateCreated
-     *
-     * @return string $dateCreated
-     */
-    public function getDateCreated()
-    {
-        return $this->date_created;
-    }
-
-    /**
-     * Set dateStarted
-     *
-     * @param string $dateStarted
-     * @return self
-     */
-    public function setDateStarted($dateStarted)
-    {
-        $this->date_started = $dateStarted;
-        return $this;
-    }
-
-    /**
-     * Get dateStarted
-     *
-     * @return string $dateStarted
-     */
-    public function getDateStarted()
-    {
-        return $this->date_started;
-    }
-
-    /**
-     * Set dateClosed
-     *
-     * @param string $dateClosed
-     * @return self
-     */
-    public function setDateClosed($dateClosed)
-    {
-        $this->date_closed = $dateClosed;
-        return $this;
-    }
-
-    /**
-     * Get dateClosed
-     *
-     * @return string $dateClosed
-     */
-    public function getDateClosed()
-    {
-        return $this->date_closed;
-    }
-
-    /**
-     * Set topicTime
-     *
-     * @param int $topicTime
-     * @return self
-     */
-    public function setTopicTime($topicTime)
-    {
-        $this->topic_time = $topicTime;
-        return $this;
-    }
-
-    /**
-     * Get topicTime
-     *
-     * @return int $topicTime
-     */
-    public function getTopicTime()
-    {
-        return $this->topic_time;
-    }
+    protected $waiting_time_options = array("5" => 5, "10" => 10, "15" => 15);
+            
 }
