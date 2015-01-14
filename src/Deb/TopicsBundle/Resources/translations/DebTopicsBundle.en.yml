@@ -12,6 +12,7 @@ topic:
         description: "Description"
         time_options: "Topic time"        
         close: "Close"
+        auth: "You are not authorized or your session is over. Please, try to reload this page."
 
 topic_filter:
     refresh_button: "Refresh topics list"

@@ -33,41 +33,51 @@ class TopicsListController extends Controller
         
         if ($request->isXmlHttpRequest()) {
             
-             $topic = new Topic();             
-             $form = $this->createForm(new CreateTopicType(), $topic);             
-             $form->handleRequest($request);
+            $securityContext = $this->container->get('security.context');
+            $user = $securityContext->getToken()->getUser();
+            if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 
-            if ($form->isValid()) {
-                                      
-                //Сохраняем в базу данных     
-                $created_date = time();
-                $topic->setDateCreated($created_date);
-                $waiting_time_ms = ($topic->getWaitingTime()) ? $topic->getWaitingTime() * 60 : 5 * 60;
-                //Время через какое должен поменяться статус у обсуждения (на processing, либо closed, если нет участников)
-                $topic->setDateTempClosing($created_date + $waiting_time_ms);
-                $topic->setStatusCode('waiting');                
-                
-                $dm = $this->get('doctrine_mongodb')->getManager();                
-                $dm->persist($topic);
-                $dm->flush();
-                
-                //Возвращаем ответ
-                //$result = array('success' => false, 'message' => 'Topic created');                                                
-                $referer_url = $request->headers->get('referer');
-                $result = array('success' => true, 'url' => $referer_url);
-            
+                 $topic = new Topic();             
+                 $form = $this->createForm(new CreateTopicType(), $topic);             
+                 $form->handleRequest($request);
+
+                if ($form->isValid()) {
+
+                    //Сохраняем в базу данных 
+                    $topic->setAuthorId($user->getId());
+                    $created_date = time();
+                    $topic->setDateCreated($created_date);
+                    $default_waiting_time = 5;
+                    $waiting_time_ms = ($topic->getWaitingTime()) ? $topic->getWaitingTime() * 60 : $default_waiting_time * 60;
+                    //Время через какое должен поменяться статус у обсуждения (на processing, либо closed, если нет участников)
+                    $topic->setDateTempClosing($created_date + $waiting_time_ms);
+                    $topic->setStatusCode('waiting');                
+
+                    $dm = $this->get('doctrine_mongodb')->getManager();                
+                    $dm->persist($topic);
+                    $dm->flush();
+
+                    //Возвращаем ответ
+                    //$result = array('success' => false, 'message' => 'Topic created');                                                
+                    $referer_url = $request->headers->get('referer');
+                    $result = array('success' => true, 'url' => $referer_url);
+
+                }else{
+                    $FormErrorIterator = $form->getErrors(true);                        
+                    $messages = preg_replace("/(\n)/", "<br/>", $FormErrorIterator->__toString());
+                    $messages = preg_replace("/(ERROR: )/", "", $messages);
+                    $result = array('success' => false, 'message' => $messages);                                  
+                }               
+
             }else{
-                $FormErrorIterator = $form->getErrors(true);                        
-                $messages = preg_replace("/(\n)/", "<br/>", $FormErrorIterator->__toString());
-                $messages = preg_replace("/(ERROR: )/", "", $messages);
-                $result = array('success' => false, 'message' => $messages);                                  
+                $message= $this->get('translator')->trans('topic.create.auth', array(), 'DebTopicsBundle');
+                $result = array('success' => false, 'message' => $message.'<br />'); 
             }
             
             $response = new Response(json_encode($result));
             $response->headers->set('Content-Type', 'application/json');     
 
             return $response;
-        
         }
         
     }

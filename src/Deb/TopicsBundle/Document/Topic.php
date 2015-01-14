@@ -40,7 +40,7 @@ class Topic
     protected $description;
     
     /**
-     * @MongoDB\ObjectId
+     * @MongoDB\String
      */
     protected $author_id;
     
@@ -154,7 +154,7 @@ class Topic
     /**
      * Set authorId
      *
-     * @param object_id $authorId
+     * @param string $authorId
      * @return self
      */
     public function setAuthorId($authorId)
@@ -166,7 +166,7 @@ class Topic
     /**
      * Get authorId
      *
-     * @return object_id $authorId
+     * @return string $authorId
      */
     public function getAuthorId()
     {
@@ -345,5 +345,5 @@ class Topic
     public function getWaitingTimeOptions()
     {
         return $this->waiting_time_options;
-    }
+    }        
 }

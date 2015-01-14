@@ -115,8 +115,9 @@
             <option value="commented">Most commented</option>
         </select>
 
-        
-        <button id="CreateTopicBtn">{{ 'topic.create.button'|trans }}</button>
+        {% if app.user %}
+            <button id="CreateTopicBtn">{{ 'topic.create.button'|trans }}</button>
+        {% endif %}
         
 
     </div>
@@ -140,30 +141,34 @@
     {% endfor %}        
     </div>
     
-    <div id="CreateTopicForm">
-        <div id="CreateTopicErrors"></div>
-        <form id="CreateTopicAjaxForm" method="post" {{ form_enctype(form) }}>
-            
-            <div id="deb_topic_create">
-                <div>
-                    <label for="deb_topic_create_name" class="required">{{ 'topic.create.name'|trans }}</label><br />
-                    <input id="deb_topic_create_name" name="deb_topic_create[name]" required="required" type="text">
+    {% if app.user %}
+    
+        <div id="CreateTopicForm">
+            <div id="CreateTopicErrors"></div>
+            <form id="CreateTopicAjaxForm" method="post" {{ form_enctype(form) }}>
+
+                <div id="deb_topic_create">
+                    <div>
+                        <label for="deb_topic_create_name" class="required">{{ 'topic.create.name'|trans }}</label><br />
+                        <input id="deb_topic_create_name" name="deb_topic_create[name]" required="required" type="text">
+                    </div>
+                    <div>
+                        <label for="deb_topic_create_description" class="required">{{ 'topic.create.description'|trans }}</label><br />
+                        <textarea id="deb_topic_create_description" name="deb_topic_create[description]" required="required"></textarea>
+                    </div>
+                    <div>
+                    {{ form_label(form.processing_time) }}
+                    {{ form_widget(form.processing_time) }}                
+                    </div>
+                    {{ form_row(form._token) }}
                 </div>
-                <div>
-                    <label for="deb_topic_create_description" class="required">{{ 'topic.create.description'|trans }}</label><br />
-                    <textarea id="deb_topic_create_description" name="deb_topic_create[description]" required="required"></textarea>
-                </div>
-                <div>
-                {{ form_label(form.processing_time) }}
-                {{ form_widget(form.processing_time) }}                
-                </div>
-                {{ form_row(form._token) }}
-            </div>
-            <br />
-            <hr />
-            <input type="submit" class="_submit" name="_submit" value="{{ 'topic.create.button'|trans }}" />
-            <input type="button" class="_close" value="{{ 'topic.create.close'|trans }}" />
-        </form>
-    </div>
+                <br />
+                <hr />
+                <input type="submit" class="_submit" name="_submit" value="{{ 'topic.create.button'|trans }}" />
+                <input type="button" class="_close" value="{{ 'topic.create.close'|trans }}" />
+            </form>
+        </div>
+        
+    {% endif %}
     
 {% endblock %}
