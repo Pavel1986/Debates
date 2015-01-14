@@ -75,25 +75,23 @@ class Topic
     protected $status_code;
     
     /**
-     *@MongoDB\Hash
      * Варианты значения $processing_time при создании обсуждения
      */
     protected $processing_time_options = array("10" => 10, "20" => 20, "30" => 30);
     
     /**
      * @MongoDB\Int
-     * Время обсуждения в статусе processing
+     * Время обсуждения (минуты) в статусе processing
      */
     protected $processing_time;
     
     /**
      * @MongoDB\Int
-     * Время в ожидании, когда появятся остальные участники обсуждения
+     * Время в ожидании (минуты), когда появятся остальные участники обсуждения
      */
     protected $waiting_time;
     
     /**
-     * @MongoDB\Hash
      * Варианты значения $waiting_time при создании обсуждения
      */
     protected $waiting_time_options = array("5" => 5, "10" => 10, "15" => 15);
@@ -286,18 +284,6 @@ class Topic
     }
 
     /**
-     * Set processingTimeOptions
-     *
-     * @param hash $processingTimeOptions
-     * @return self
-     */
-    public function setProcessingTimeOptions($processingTimeOptions)
-    {
-        $this->processing_time_options = $processingTimeOptions;
-        return $this;
-    }
-
-    /**
      * Get processingTimeOptions
      *
      * @return hash $processingTimeOptions
@@ -349,18 +335,6 @@ class Topic
     public function getWaitingTime()
     {
         return $this->waiting_time;
-    }
-
-    /**
-     * Set waitingTimeOptions
-     *
-     * @param hash $waitingTimeOptions
-     * @return self
-     */
-    public function setWaitingTimeOptions($waitingTimeOptions)
-    {
-        $this->waiting_time_options = $waitingTimeOptions;
-        return $this;
     }
 
     /**

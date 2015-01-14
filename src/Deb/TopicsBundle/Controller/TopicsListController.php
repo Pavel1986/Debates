@@ -14,7 +14,7 @@ class TopicsListController extends Controller
         //Getting topics
         $topics = $this->get('doctrine_mongodb')
         ->getRepository('DebTopicsBundle:Topic')
-        ->findAll();
+        ->findBy(array(), array('date_created'=>'desc'));
 
         //For generation links (socket.io)
         $locale = $this->get('request')->getLocale();        
@@ -42,7 +42,11 @@ class TopicsListController extends Controller
                 //Сохраняем в базу данных     
                 $created_date = time();
                 $topic->setDateCreated($created_date);
+                $waiting_time_ms = ($topic->getWaitingTime()) ? $topic->getWaitingTime() * 60 : 5 * 60;
+                //Время через какое должен поменяться статус у обсуждения (на processing, либо closed, если нет участников)
+                $topic->setDateTempClosing($created_date + $waiting_time_ms);
                 $topic->setStatusCode('waiting');                
+                
                 $dm = $this->get('doctrine_mongodb')->getManager();                
                 $dm->persist($topic);
                 $dm->flush();
