@@ -63,7 +63,7 @@ class Topic
     protected $date_closed;
     
     /**
-     * @MongoDB\String
+     * @MongoDB\Int
      * Запланированная дата окончания обсуждения. Может меняться, если участники захотят продлить обсуждение или досрочно закончить
      */
     protected $date_temp_closing;
@@ -242,7 +242,7 @@ class Topic
     /**
      * Set dateTempClosing
      *
-     * @param string $dateTempClosing
+     * @param int $dateTempClosing
      * @return self
      */
     public function setDateTempClosing($dateTempClosing)
@@ -254,7 +254,7 @@ class Topic
     /**
      * Get dateTempClosing
      *
-     * @return string $dateTempClosing
+     * @return int $dateTempClosing
      */
     public function getDateTempClosing()
     {
