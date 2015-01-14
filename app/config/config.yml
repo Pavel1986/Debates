@@ -103,3 +103,5 @@ services:
         arguments: ["%kernel.default_locale%"]
         tags:
             - { name: kernel.event_subscriber }
+    topics_service:
+        class: Deb\TopicsBundle\Service\TopicsService

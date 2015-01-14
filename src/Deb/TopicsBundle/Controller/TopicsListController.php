@@ -11,6 +11,8 @@ class TopicsListController extends Controller
 {
     public function indexAction()
     {                            
+        $test = $this->get('topics_service')->getTest();
+        
         //Getting topics
         $topics = $this->get('doctrine_mongodb')
         ->getRepository('DebTopicsBundle:Topic')
