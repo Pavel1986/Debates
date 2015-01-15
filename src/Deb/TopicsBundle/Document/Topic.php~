@@ -40,7 +40,7 @@ class Topic
     protected $description;
     
     /**
-     * @MongoDB\ObjectId
+     * @MongoDB\String
      */
     protected $author_id;
     
@@ -95,8 +95,13 @@ class Topic
      * Варианты значения $waiting_time при создании обсуждения
      */
     protected $waiting_time_options = array("5" => 5, "10" => 10, "15" => 15);
+    
+    /**
+     * @MongoDB\Hash
+     * User id участников обсуждения.
+     */
+    protected $members;
             
-
     /**
      * Get id
      *
@@ -154,7 +159,7 @@ class Topic
     /**
      * Set authorId
      *
-     * @param object_id $authorId
+     * @param string $authorId
      * @return self
      */
     public function setAuthorId($authorId)
@@ -166,7 +171,7 @@ class Topic
     /**
      * Get authorId
      *
-     * @return object_id $authorId
+     * @return string $authorId
      */
     public function getAuthorId()
     {
@@ -345,5 +350,5 @@ class Topic
     public function getWaitingTimeOptions()
     {
         return $this->waiting_time_options;
-    }
+    }        
 }

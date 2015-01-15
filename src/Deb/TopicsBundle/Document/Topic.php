@@ -6,7 +6,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\Document(repositoryClass="Deb\TopicsBundle\Repository\TopicRepository")
+ * 
  */
 class Topic
 {
@@ -45,19 +46,19 @@ class Topic
     protected $author_id;
     
     /**
-     * @MongoDB\String
+     * @MongoDB\Int
      * Дата создания обсуждения, в этот момент у обсуждения статус waiting, следующий через $waiting_time минут будет processing
      */
     protected $date_created;
     
     /**
-     * @MongoDB\String
+     * @MongoDB\Int
      * Дата начала обсуждения, в этот момент у обсуждения статус processing, следующий через $processing_time минут (если участники не продлят время или не закончат раньше) будет closed
      */
     protected $date_started;
     
     /**
-     * @MongoDB\String
+     * @MongoDB\Int
      * Дата конечного закрытия обсуждения, в этот момент у обсуждения статус closed
      */
     protected $date_closed;
@@ -95,8 +96,13 @@ class Topic
      * Варианты значения $waiting_time при создании обсуждения
      */
     protected $waiting_time_options = array("5" => 5, "10" => 10, "15" => 15);
+    
+    /**
+     * @MongoDB\Hash
+     * User id участников обсуждения.
+     */
+    protected $members;
             
-
     /**
      * Get id
      *
@@ -176,7 +182,7 @@ class Topic
     /**
      * Set dateCreated
      *
-     * @param string $dateCreated
+     * @param int $dateCreated
      * @return self
      */
     public function setDateCreated($dateCreated)
@@ -188,7 +194,7 @@ class Topic
     /**
      * Get dateCreated
      *
-     * @return string $dateCreated
+     * @return int $dateCreated
      */
     public function getDateCreated()
     {
@@ -198,7 +204,7 @@ class Topic
     /**
      * Set dateStarted
      *
-     * @param string $dateStarted
+     * @param int $dateStarted
      * @return self
      */
     public function setDateStarted($dateStarted)
@@ -210,7 +216,7 @@ class Topic
     /**
      * Get dateStarted
      *
-     * @return string $dateStarted
+     * @return int $dateStarted
      */
     public function getDateStarted()
     {
@@ -220,7 +226,7 @@ class Topic
     /**
      * Set dateClosed
      *
-     * @param string $dateClosed
+     * @param int $dateClosed
      * @return self
      */
     public function setDateClosed($dateClosed)
@@ -232,7 +238,7 @@ class Topic
     /**
      * Get dateClosed
      *
-     * @return string $dateClosed
+     * @return int $dateClosed
      */
     public function getDateClosed()
     {
@@ -346,4 +352,37 @@ class Topic
     {
         return $this->waiting_time_options;
     }        
+
+    /**
+     * Set members
+     *
+     * @param hash $members
+     * @return self
+     */
+    public function setMembers($members)
+    {
+        $this->members = $members;
+        return $this;
+    }
+
+    /**
+     * Get members
+     *
+     * @return hash $members
+     */
+    public function getMembers()
+    {
+        return $this->members;
+    }
+    
+    /**
+     * Add member_id (user_id)
+     *
+     * @return hash $members
+     */
+    public function addMember($member_id)
+    {
+        $this->members[] = $member_id;
+        return $this->members;
+    }
 }

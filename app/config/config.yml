@@ -103,5 +103,6 @@ services:
         arguments: ["%kernel.default_locale%"]
         tags:
             - { name: kernel.event_subscriber }
+    #temporary not using, let's leave this for opportunity
     topics_service:
         class: Deb\TopicsBundle\Service\TopicsService
