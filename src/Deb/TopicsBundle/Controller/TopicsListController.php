@@ -20,12 +20,11 @@ class TopicsListController extends Controller
 
         //For generation links (socket.io)
         $locale = $this->get('request')->getLocale();        
-        $host = $this->get('router')->getContext()->getHost();
         
         //Create topic form
         $form = $this->createForm(new CreateTopicType(), new Topic());
         
-        return $this->render('DebTopicsBundle:TopicsList:topics_list.html.twig', array('locale' => $locale, 'host' => $host, 'topics' => $topics, 'form' => $form->createView()));
+        return $this->render('DebTopicsBundle:TopicsList:topics_list.html.twig', array('locale' => $locale, 'topics' => $topics, 'form' => $form->createView()));
     }    
     
     public function createAction()

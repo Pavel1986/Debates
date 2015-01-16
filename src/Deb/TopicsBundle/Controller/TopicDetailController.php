@@ -14,7 +14,6 @@ class TopicDetailController extends Controller
         ->find($id);
         
         $locale = $this->get('request')->getLocale();
-        $host = $this->get('router')->getContext()->getHost();
         
         $doNotShowJoin = true;
         $securityContext = $this->container->get('security.context');
@@ -29,6 +28,6 @@ class TopicDetailController extends Controller
          }
          $doNotShowJoin = false;
         
-        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'host' => $host, 'topic' => $topic, 'doNotShowJoin' => $doNotShowJoin));
+        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'topic' => $topic, 'doNotShowJoin' => $doNotShowJoin));
     }
 }
