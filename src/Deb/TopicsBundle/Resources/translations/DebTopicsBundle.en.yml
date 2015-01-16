@@ -13,6 +13,7 @@ topic:
         time_options: "Topic time"        
         close: "Close"
         auth: "You are not authorized or your session is over. Please, try to reload this page."
+        author_is_member: "You are already in active topics."
 
 topic_filter:
     refresh_button: "Refresh topics list"

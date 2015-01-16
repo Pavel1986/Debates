@@ -98,7 +98,7 @@ class Topic
     protected $waiting_time_options = array("5" => 5, "10" => 10, "15" => 15);
     
     /**
-     * @MongoDB\Hash
+     * @MongoDB\Collection
      * User id участников обсуждения.
      */
     protected $members;
@@ -356,7 +356,7 @@ class Topic
     /**
      * Set members
      *
-     * @param hash $members
+     * @param collection $members
      * @return self
      */
     public function setMembers($members)
@@ -368,7 +368,7 @@ class Topic
     /**
      * Get members
      *
-     * @return hash $members
+     * @return collection $members
      */
     public function getMembers()
     {

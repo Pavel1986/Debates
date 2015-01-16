@@ -11,11 +11,7 @@ class TopicsListController extends Controller
 {
     public function indexAction()
     {                            
-        $dm = $this->get('doctrine_mongodb');
-        //$test = $this->get('topics_service')->isUserTopicMember("54acd2e0db304be7047b23c6");
-        $result = $dm->getRepository('DebTopicsBundle:Topic')->isUserAnyTopicMember("54acd2e0db304be7047b23c6");
-                
-        /********************************/
+        $dm = $this->get('doctrine_mongodb');                
         
         //Getting topics
         $topics = $dm
@@ -42,6 +38,10 @@ class TopicsListController extends Controller
             $securityContext = $this->container->get('security.context');
             $user = $securityContext->getToken()->getUser();
             if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                
+                $dm = $this->get('doctrine_mongodb');
+                //Проверяем состоит ли пользователь в активных обсуждения [ waiting | processing ]
+                if(! $dm->getRepository('DebTopicsBundle:Topic')->isUserAnyTopicMember($user->getId())){
 
                  $topic = new Topic();             
                  $form = $this->createForm(new CreateTopicType(), $topic);             
@@ -60,7 +60,7 @@ class TopicsListController extends Controller
                     $topic->setDateTempClosing($created_date + $waiting_time_ms);
                     $topic->setStatusCode('waiting');                
 
-                    $dm = $this->get('doctrine_mongodb')->getManager();                
+                    $dm = $dm->getManager();                
                     $dm->persist($topic);
                     $dm->flush();
 
@@ -76,6 +76,11 @@ class TopicsListController extends Controller
                     $result = array('success' => false, 'message' => $messages);                                  
                 }               
 
+                }else{
+                    $message= $this->get('translator')->trans('topic.create.author_is_member', array(), 'DebTopicsBundle');
+                    $result = array('success' => false, 'message' => $message.'<br />'); 
+                }
+                
             }else{
                 $message= $this->get('translator')->trans('topic.create.auth', array(), 'DebTopicsBundle');
                 $result = array('success' => false, 'message' => $message.'<br />'); 

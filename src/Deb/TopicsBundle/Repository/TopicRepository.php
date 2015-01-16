@@ -13,30 +13,23 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 class TopicRepository extends DocumentRepository
 {
     //При создании обсуждения : 
-    //Участвует ли определённый пользователь,в обсуждениях, у которых стоит статус "waiting" и "processing" || return true/false
+    //Участвует ли определённый пользователь,в обсуждениях, у которых стоит статус "waiting" и "processing" || return true/false - Сделано
+    //Красиво оформить логику создания обсуждения
     
     //Для детальной страницы обсуждения
     //Для отображения элементов отправки сообщений и прочего
     //Является ли данный пользователь участником, данного обсуждения + возвращать автор он или нет                               
     
     public function isUserAnyTopicMember($user_id){
-        $waork = 'w';
-        //$topics = $this->findBy(array(), array('date_created'=>'desc'));
-        
-        //$result = $this->createQueryBuilder('Topic')->field('members')->equals($user_id)->getQuery()->execute()->count();
-        
-        $result = $this->createQueryBuilder('Topic')->field('members')->exists($user_id)->getQuery()->execute()->count();
-//        $result = $this->findOneBy(array('members' => $user_id));        
-        
-        /*
-        $qb = $this->createQueryBuilder('App:Something');
-$qb->;
-                
-        db.survey.find(
-            { results: { $elemMatch: { product: "xyz", score: { $gte: 8 } } } }
-         )
-        */
-        return 'works';
+        $qb = $this->createQueryBuilder('Topic');
+        $TopicsFound = $qb
+                ->field('members')->equals($user_id)
+                ->addOr($qb->expr()->field('status_code')->equals('waiting'))
+                ->addOr($qb->expr()->field('status_code')->equals('processing'))
+                ->getQuery()->execute()->count();
+        //Если не состоит в обсуждения то, возвращаем false
+        return ($TopicsFound > 0) ? true : false;
+                        
     }
     
 }
