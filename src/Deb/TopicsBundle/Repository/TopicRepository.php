@@ -11,22 +11,19 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  * repository methods below.
  */
 class TopicRepository extends DocumentRepository
-{
-    //При создании обсуждения : 
-    //Участвует ли определённый пользователь,в обсуждениях, у которых стоит статус "waiting" и "processing" || return true/false - Сделано
-    //Красиво оформить логику создания обсуждения
-    
-    //Для детальной страницы обсуждения
-    //Для отображения элементов отправки сообщений и прочего
-    //Является ли данный пользователь участником, данного обсуждения + возвращать автор он или нет                               
-    
-    public function isUserAnyTopicMember($user_id){
+{        
+    public function isUserAnyTopicMember($user_id, $except_topic_id = null){
         $qb = $this->createQueryBuilder('Topic');
         $TopicsFound = $qb
                 ->field('members')->equals($user_id)
                 ->addOr($qb->expr()->field('status_code')->equals('waiting'))
-                ->addOr($qb->expr()->field('status_code')->equals('processing'))
-                ->getQuery()->execute()->count();
+                ->addOr($qb->expr()->field('status_code')->equals('processing'));
+        if($except_topic_id){
+            $TopicsFound->field('id')->notEqual($except_topic_id);            
+        }        
+                
+                
+        $TopicsFound = $TopicsFound->getQuery()->execute()->count();
         //Если не состоит в обсуждения то, возвращаем false
         return ($TopicsFound > 0) ? true : false;
                         

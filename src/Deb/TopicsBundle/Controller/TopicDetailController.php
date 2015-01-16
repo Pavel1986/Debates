@@ -16,6 +16,19 @@ class TopicDetailController extends Controller
         $locale = $this->get('request')->getLocale();
         $host = $this->get('router')->getContext()->getHost();
         
-        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'host' => $host, 'topic' => $topic));
+        $doNotShowJoin = true;
+        $securityContext = $this->container->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            //Пользователь не участвует в других обсуждениях
+             $isUserAnyTopicMember = $this->get('doctrine_mongodb')->getRepository('DebTopicsBundle:Topic')->isUserAnyTopicMember($user->getId(), $topic->getId());
+             
+             if(! $isUserAnyTopicMember && $topic->getStatusCode() === "waiting" && count($topic->getMembers()) < 2){
+                $doNotShowJoin = false; 
+             }                        
+         }
+         $doNotShowJoin = false;
+        
+        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'host' => $host, 'topic' => $topic, 'doNotShowJoin' => $doNotShowJoin));
     }
 }
