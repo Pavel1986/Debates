@@ -20,7 +20,8 @@ framework:
     trusted_proxies: ~
     session:
         # handler_id set to null will use default session handler from php.ini
-        handler_id:  ~
+        #handler_id:  ~
+        handler_id: session.handler.mongo
     fragments:       ~
     http_method_override: true
 
@@ -105,4 +106,17 @@ services:
             - { name: kernel.event_subscriber }
     #temporary not using, let's leave this for opportunity
     topics_service:
-        class: Deb\TopicsBundle\Service\TopicsService
+        class: Deb\TopicsBundle\Service\TopicsService      
+    session.handler.mongo:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandler
+        arguments: [@mongo, %mongo.session.options%]    
+    mongo.connection:
+        class: MongoDoctrine\MongoDB\Connection
+        factory_service: doctrine.odm.mongodb.document_manager
+        factory_method: getConnection
+        calls:
+           - [initialize, []]
+    mongo:
+        class: Mongo
+        factory_service: mongo.connection
+        factory_method: getMongo
