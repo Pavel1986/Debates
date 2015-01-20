@@ -53,7 +53,9 @@ implements AuthenticationSuccessHandlerInterface,
             $cookieID   = $request->cookies->get("DBSession");
             $cookies = $response->headers->getCookies();
             $cookies2 = $request->cookies->all();
-            
+            $expires = $response->getExpires();
+            $session  = $request->get("session");
+
             return $response;
         }
     }

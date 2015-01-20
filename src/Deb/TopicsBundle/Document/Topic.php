@@ -33,7 +33,7 @@ class Topic
      * @Assert\NotBlank( message = "topic.form_create.description.blank" )
      * @Assert\Length(
      *      min = 3,
-     *      max = 50,
+     *      max = 5000,
      *      minMessage = "topic.form_create.description.min",
      *      maxMessage = "topic.form_create.description.max"
      * )

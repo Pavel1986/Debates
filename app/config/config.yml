@@ -22,7 +22,7 @@ framework:
         # handler_id set to null will use default session handler from php.ini
         name: "DBSession"
         handler_id:  ~
-        cookie_lifetime: 5
+        cookie_lifetime: 600
     fragments:       ~
     http_method_override: true
 
@@ -108,9 +108,9 @@ services:
     #temporary not using, let's leave this for opportunity
     topics_service:
         class: Deb\TopicsBundle\Service\TopicsService      
-    deb.listener.login:  
-        class: Exten\FOSUserBundle\Handler\CookieSessionHandler
-        arguments: [ @doctrine_mongodb, @service_container ]
-        tags:  
+#    deb.listener.login:  
+#        class: Exten\FOSUserBundle\Handler\CookieSessionHandler
+#        arguments: [ @doctrine_mongodb, @service_container ]
+#        tags:  
 #         - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-         - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
+#         - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
