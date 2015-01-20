@@ -15,9 +15,6 @@ parameters:
     debug_toolbar: true
     debug_redirects: false
     use_assetic_controller: true
-    mongo.session.options:
-        database: debates
-        collection: session
 jms_i18n_routing:
     default_locale: en
     locales:

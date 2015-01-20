@@ -15,9 +15,13 @@
             
             var data = socket.emit('join', { topic_id : "{{ topic.id }}" });
         
-            $("#TopicDetail").find("#Send").click(function () {        
-            socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
-        });
+            $("#TopicDetail").find("#Send").click(function () {
+                socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
+            });
+            
+            $("#TopicDetail").find("#Join").click(function () {
+                socket.emit('join', { topic_id : "{{ topic.id }}" });
+            });            
     });
         
     </script>
