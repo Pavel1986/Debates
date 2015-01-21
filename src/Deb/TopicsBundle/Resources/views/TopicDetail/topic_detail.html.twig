@@ -1,4 +1,5 @@
 {% extends '::debates/base.html.twig' %}
+{% trans_default_domain 'DebTopicsBundle' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -13,14 +14,14 @@
     <script>
         $(function() { 
             
-            var data = socket.emit('join', { topic_id : "{{ topic.id }}" });
+            socket.emit('joinTopic', { topic_id : "{{ topic.id }}" });
         
             $("#TopicDetail").find("#Send").click(function () {
                 socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
             });
             
             $("#TopicDetail").find("#Join").click(function () {
-                socket.emit('join', { topic_id : "{{ topic.id }}" });
+                socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
             });            
     });
         
@@ -53,9 +54,7 @@
 
                 <div id="ChatBox" style="border: 1px solid green">
                     <div id="MessagesList">
-                        {#    {{ for(var TopicMessage in it.TopicMessages) { }}
-                            <p>{{=it.TopicMessages[TopicMessage].Message}}</p>
-                        {{ } }} #}
+
                     </div>
                     <div id="VisitorsDiv">
                         <div>Visitors list :</div>
