@@ -45,17 +45,6 @@ implements AuthenticationSuccessHandlerInterface,
             $result = array('success' => true, 'url' => $referer_url);
             $response = new Response(json_encode($result));
             $response->headers->set('Content-Type', 'application/json');
-            
-            //Записывам cookieID в пользователя           
-            //$user = $this->container->get('security.context')->getToken()->getUser();
-            $userID = $token->getUser()->getId();
-            $cookiees3   = $request->cookies;
-            $cookieID   = $request->cookies->get("DBSession");
-            $cookies = $response->headers->getCookies();
-            $cookies2 = $request->cookies->all();
-            $expires = $response->getExpires();
-            $session  = $request->get("session");
-
             return $response;
         }
     }
