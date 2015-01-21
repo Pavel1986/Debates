@@ -22,7 +22,7 @@ framework:
         # handler_id set to null will use default session handler from php.ini
         name: "DBSession"
         handler_id:  ~
-        cookie_lifetime: 10
+        cookie_lifetime: 10000
     fragments:       ~
     http_method_override: true
 
@@ -81,9 +81,9 @@ doctrine_mongodb:
             auto_mapping: true
             
 fos_user:
-    db_driver: mongodb # other valid values are 'mongodb', 'couchdb' and 'propel'
+    db_driver: mongodb
     firewall_name: main
-    user_class: Deb\UserBundle\Document\User            
+    user_class: Exten\FOSUserBundle\Document\User            
     
 hwi_oauth:
     firewall_name: secured_area
@@ -113,4 +113,3 @@ services:
         arguments: [ @doctrine_mongodb, @service_container ]
         tags:  
          - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-#         - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
