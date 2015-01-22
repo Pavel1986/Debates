@@ -26,6 +26,11 @@ class User extends BaseUser
      * Время в unix формате через сколько закончится сессия куки
      */
     protected $lastCookieExpires;
+    
+    /**
+     * @MongoDB\String
+     */
+    protected $system_language;
 
     public function __construct()
     {
@@ -85,5 +90,27 @@ class User extends BaseUser
     public function getLastCookieExpires()
     {
         return $this->lastCookieExpires;
+    }
+
+    /**
+     * Set systemLanguage
+     *
+     * @param string $systemLanguage
+     * @return self
+     */
+    public function setSystemLanguage($systemLanguage)
+    {
+        $this->system_language = $systemLanguage;
+        return $this;
+    }
+
+    /**
+     * Get systemLanguage
+     *
+     * @return string $systemLanguage
+     */
+    public function getSystemLanguage()
+    {
+        return $this->system_language;
     }
 }

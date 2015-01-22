@@ -97,6 +97,7 @@ form:
     password_confirmation: "Подтвердите пароль:"
     new_password: "Новый пароль:"
     new_password_confirmation: "Подтвердите пароль:"
+    language: "Язык:"    
 
 "Bad credentials": "Ваш логин или пароль не верен."
 "Invalid CSRF token.": "Пожалуйста, попробуйте перезагрузить страницу. И повторить отправку формы."

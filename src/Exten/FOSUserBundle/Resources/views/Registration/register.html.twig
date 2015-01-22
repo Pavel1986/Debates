@@ -62,8 +62,18 @@
     </script>
    
     <form method="post" class="fos_user_registration_register">              
-        
+               
         <div id="fos_user_registration_form">
+            <div>
+                <label for="fos_user_registration_form_language" class="required">{{ 'form.language'|trans }}</label>
+                <select name="fos_user_registration_form[system_language]">
+                    {% for language in locales %}
+
+                       <option value="{{ language }}">{{ language|trans({},'system') }}</option>
+
+                    {% endfor %}                                       
+                </select>
+            </div>
             <div>
                 <label for="fos_user_registration_form_email" class="required">{{ 'form.email'|trans }}</label><br />
                 <input type="email" id="fos_user_registration_form_email" name="fos_user_registration_form[email]" required="required" />
@@ -79,7 +89,7 @@
             <div>
                 <label for="fos_user_registration_form_plainPassword_second" class="required">{{ 'form.password_confirmation'|trans }}</label><br />
                 <input type="password" id="fos_user_registration_form_plainPassword_second" name="fos_user_registration_form[plainPassword][second]" required="required" />
-            </div>                  
+            </div>
             <div>
                 {{ form_row(form._token) }}                
             </div>

@@ -17,7 +17,7 @@ class RegistrationController extends Controller
         $form->handleRequest($request);
              
         return $this->render('ExtenFOSUserBundle:Registration:register.html.twig', array(
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ));
         
     }

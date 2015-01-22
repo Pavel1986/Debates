@@ -15,9 +15,8 @@ parameters:
     debug_toolbar: true
     debug_redirects: false
     use_assetic_controller: true
+    locales : [ ru, en ]
 jms_i18n_routing:
-    default_locale: en
-    locales:
-        - en
-        - ru
+    default_locale: %locale%
+    locales: %locales%
     strategy: prefix_except_default
