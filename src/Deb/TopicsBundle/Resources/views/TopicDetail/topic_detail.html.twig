@@ -21,20 +21,24 @@
                 $("#TopicDetail").find("#Send").click(function () {
                     socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
                 });
-
+                
+                {% if doNotShowJoin == false %}
+                
                 $("#TopicDetail").find("#Join").click(function () {
                     socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
                 });  
+                
+                {% endif %}
             
             }
-    });
+        });
         
     </script>
     
 {% endblock %}
 
 {% block body %}
-    
+       
     {% if topic is not null %}                                    
     
         {% if topic.dateCreated is not null %}

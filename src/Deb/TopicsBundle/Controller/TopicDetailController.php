@@ -26,7 +26,6 @@ class TopicDetailController extends Controller
                 $doNotShowJoin = false; 
              }                        
          }
-         $doNotShowJoin = false;
         
         return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'topic' => $topic, 'user' => $user, 'doNotShowJoin' => $doNotShowJoin));
     }
