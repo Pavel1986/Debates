@@ -30,7 +30,7 @@
 
                 event.preventDefault();
                 $.ajax({
-                    type        : $('form').attr( 'method' ),
+                    type        : $('.fos_user_login_form').attr( 'method' ),
                     url         : '{{ path("fos_user_security_check") }}',
                     data        : $('.fos_user_login_form').serialize(),
                     dataType    : "json",

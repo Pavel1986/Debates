@@ -14,15 +14,19 @@
     <script>
         $(function() { 
             
-            socket.emit('joinTopic', { topic_id : "{{ topic.id }}" });
-        
-            $("#TopicDetail").find("#Send").click(function () {
-                socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
-            });
+            if(socket){
             
-            $("#TopicDetail").find("#Join").click(function () {
-                socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
-            });            
+                socket.emit('joinTopic', { topic_id : "{{ topic.id }}" });
+        
+                $("#TopicDetail").find("#Send").click(function () {
+                    socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
+                });
+
+                $("#TopicDetail").find("#Join").click(function () {
+                    socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
+                });  
+            
+            }
     });
         
     </script>
