@@ -85,7 +85,10 @@ doctrine_mongodb:
 fos_user:
     db_driver: mongodb
     firewall_name: main
-    user_class: Exten\FOSUserBundle\Document\User            
+    user_class: Exten\FOSUserBundle\Document\User         
+    registration:
+        form:
+            type: exten_fos_user_registration
     
 hwi_oauth:
     firewall_name: secured_area
@@ -115,3 +118,7 @@ services:
         arguments: [ @doctrine_mongodb, @service_container ]
         tags:  
          - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+    exten_fos_user.registration.form.type:
+        class: Exten\FOSUserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: exten_fos_user_registration }
