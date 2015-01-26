@@ -102,9 +102,9 @@ services:
     authentication_handler:
         class: Exten\FOSUserBundle\Handler\AuthenticationHandler
         arguments:  [@router, @translator]
-    logout_success_handler:
-        class: Exten\FOSUserBundle\Handler\LogoutSuccessHandler
-        arguments:  [@router]        
+    logout_handler:
+        class: Exten\FOSUserBundle\Handler\LogoutHandler
+        arguments: [ @doctrine_mongodb, @service_container ]
     exten_locale.locale_listener:
         class: Exten\LocaleBundle\EventListener\LocaleListener
         arguments: ["%kernel.default_locale%"]

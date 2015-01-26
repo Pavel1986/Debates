@@ -26,7 +26,7 @@ security:
                 check_path: exten_fos_user_security_check # This is needed to change
             logout:       
                 path: exten_fos_user_security_logout
-                success_handler: logout_success_handler
+                handler: logout_handler
             anonymous:    true
         secured_area:
             anonymous: ~
