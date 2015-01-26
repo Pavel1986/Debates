@@ -20,7 +20,7 @@ class TopicDetailController extends Controller
         $user = $securityContext->getToken()->getUser();
          if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             //Пользователь не участвует в других обсуждениях
-             $isUserAnyTopicMember = $this->get('doctrine_mongodb')->getRepository('DebTopicsBundle:Topic')->isUserAnyTopicMember($user->getId(), $topic->getId());
+             $isUserAnyTopicMember = $this->get('doctrine_mongodb')->getRepository('DebTopicsBundle:Topic')->isUserAnyTopicMember($user->getId());
              
              if(! $isUserAnyTopicMember && $topic->getStatusCode() === "waiting" && count($topic->getMembers()) < 2){
                 $doNotShowJoin = false; 
