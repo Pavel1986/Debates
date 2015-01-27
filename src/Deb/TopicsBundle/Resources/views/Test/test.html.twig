@@ -24,10 +24,11 @@
                     socket.emit('getUsersList', { topic_id : $("#GetTopicListTxt").val() });
                 });
         
-                {# $("#TopicDetail").find("#Send").click(function () {
-                    socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
+                $("#TopicStartedBtn").click(function () {
+                    socket.emit('TopicStarted', { topic_id : $("#TopicStartedTxt").val() });
                 });
-                                                
+                
+                {#
                 $("#TopicDetail").find("#Join").click(function () {
                     socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
                 });                  
@@ -44,7 +45,8 @@
 {% block body %}
     
    <div id="EventsList">
-        <input type="button" id="GetTopicListBtn" value="GetTopicListBtn"><input type="text" id="GetTopicListTxt"> 
+        <input type="button" id="GetTopicListBtn" value="Get Topic List"><input type="text" id="GetTopicListTxt"> 
+        <input type="button" id="TopicStartedBtn" value="Start topic"><input type="text" id="TopicStartedTxt"> 
    </div>
    
         
