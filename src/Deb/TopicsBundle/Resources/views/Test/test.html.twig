@@ -1,0 +1,51 @@
+{% extends '::debates/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <style>        
+        #EventsList { padding: 20px; }
+        #EventsList input[type=text]{
+            width: 300px;
+        }
+    </style>
+    
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script>
+        $(function() { 
+            
+            if(socket){
+                
+                $("#GetTopicListBtn").click(function () {
+                    socket.emit('getUsersList', { topic_id : $("#GetTopicListTxt").val() });
+                });
+        
+                {# $("#TopicDetail").find("#Send").click(function () {
+                    socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
+                });
+                                                
+                $("#TopicDetail").find("#Join").click(function () {
+                    socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
+                });                  
+            
+                #}
+                
+            }
+        });
+        
+    </script>
+    
+{% endblock %}
+
+{% block body %}
+    
+   <div id="EventsList">
+        <input type="button" id="GetTopicListBtn" value="GetTopicListBtn"><input type="text" id="GetTopicListTxt"> 
+   </div>
+   
+        
+{% endblock %}

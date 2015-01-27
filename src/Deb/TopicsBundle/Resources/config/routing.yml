@@ -17,3 +17,7 @@ personal_section:
 topic_create:
     path:     /create
     defaults: { _controller: DebTopicsBundle:TopicsList:create }   
+    
+test:
+    path:     /test
+    defaults: { _controller: DebTopicsBundle:Test:index }       
