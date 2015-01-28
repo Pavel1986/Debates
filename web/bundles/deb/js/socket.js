@@ -12,11 +12,12 @@ $(function() {
                 
             });
         });
-        socket.on('TopicStarted', function () {
-            alert('TopicStarted. In room.');
-        });
         socket.on('TopicStartedAuthor', function () {
             alert('TopicStarted. To author only.');
         });
+        socket.on('TopicStarted', function () {
+            alert('TopicStarted. In room.');
+        });
+        
     }
 });
