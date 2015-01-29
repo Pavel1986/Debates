@@ -4,8 +4,8 @@
     {{ parent() }}
     
     <style>        
-        #EventsList { padding: 20px; }
-        #EventsList input[type=text]{
+        #EventsList, #AjaxList { padding: 20px; }
+        #EventsList input[type=text], #AjaxList input[type=text]{
             width: 300px;
         }
     </style>
@@ -36,11 +36,11 @@
                 #}
                 
             }
-            $('#VoteForMemberBtn').click(function(ev){
+            $('#VoteForMember1Btn').click(function(ev){
                $.ajax({
                     type        : "POST",
                     url         : '{{ path('topic_vote_member') }}',
-                    data        : { topic_id : '54c0ece9db304bf80c7b23c6', member_id : '54abe4ecdb304be90b7b23c6' },
+                    data        : { topic_id : '54bea0796803faab068b4567', member_id : '54ac29326803fa7c088b4567' },
                     dataType    : "json",
                     success     : function(data, status, object) {
                         if(data.success == false){
@@ -53,7 +53,25 @@
                         console.log(data.message);
                     }
                 }); 
-            });            
+            });      
+            $('#VoteForMember2Btn').click(function(ev){
+               $.ajax({
+                    type        : "POST",
+                    url         : '{{ path('topic_vote_member') }}',
+                    data        : { topic_id : '54bea0796803faab068b4567', member_id : '54c32ef46803fa71048b4568' },
+                    dataType    : "json",
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                            alert(data.message);
+                        } else if(data.success == true){
+                            alert('works');
+                        };                        
+                    },
+                    error: function(data, status, object){
+                        console.log(data.message);
+                    }
+                }); 
+            });   
             
         });
         
@@ -69,9 +87,9 @@
     </div>
     
     <div id="AjaxList">
-        <input type="button" id="VoteForMemberBtn" value="VoteForMember">
-        Topic id : <input type="text" id="VoteForMemberTopicId">
-        Member id : <input type="text" id="VoteForMemberMemberId"><br />
+        <input type="button" id="VoteForMember1Btn" value="VoteForMember1">
+        <input type="button" id="VoteForMember2Btn" value="VoteForMember2">
+
     </div>
    
         

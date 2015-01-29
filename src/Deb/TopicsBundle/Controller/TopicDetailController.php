@@ -5,6 +5,7 @@ namespace Deb\TopicsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Deb\TopicsBundle\Document\Topic;
+use Deb\TopicsBundle\Document\MemberVote;
 
 class TopicDetailController extends Controller
 {        
@@ -47,6 +48,31 @@ class TopicDetailController extends Controller
                     //Проверяем, что обсуждение существует (processing) и пользователь за которого он голосует участвует в нём                    
                     $params =  $request->request->all();
                     if($dm->getRepository('DebTopicsBundle:Topic')->UserIsTopicMember($params["member_id"], $params["topic_id"])){
+                        //Сохраняем голос в базу данных
+                        /*
+                        $memberVote = new MemberVote();                        
+                        $meberVote->setUserId($user->getId());
+                        $meberVote->setMemberId($params["member_id"]);
+                        $meberVote->setTopicId($params["topic_id"]);*/
+                        
+                        $dm_manager = $dm->getManager();
+                        
+                        $memberVote = $dm_manager->getRepository('DebTopicsBundle:MemberVote')->findOneBy(array('topic_id' => $params["topic_id"], 'user_id' => $user->getId()));
+                        /* Какого хера он возвращает topic_id = null ?????? */
+                        
+                        
+                        if($memberVote){
+                            $memberVote->setMemberId($params["member_id"]);
+                        }else{
+                            $memberVote = new MemberVote();
+                            $memberVote->setUserId($user->getId());
+                            $memberVote->setMemberId($params["member_id"]);
+                            $memberVote->setTopicId($params["topic_id"]);
+                                                        
+                            $dm_manager->persist($memberVote);
+                        }
+                        $dm_manager->flush();
+                        
                         $result = array('success' => true);
                     }else{
                         $message= $this->get('translator')->trans('topic.detail.member_is_not_in_topic', array(), 'DebTopicsBundle');

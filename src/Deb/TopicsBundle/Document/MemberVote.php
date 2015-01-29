@@ -28,6 +28,12 @@ class MemberVote
      */
     protected $member_id;
     
+    /**
+     * В каком обсуждение произошло голосование
+     * @MongoDB\String
+     */
+    protected $topic_id;
+    
 
     /**
      * Get id
@@ -81,5 +87,27 @@ class MemberVote
     public function getMemberId()
     {
         return $this->member_id;
+    }
+
+    /**
+     * Set topicId
+     *
+     * @param string $topicId
+     * @return self
+     */
+    public function setTopicId($topicId)
+    {
+        $this->topic_id = $topicId;
+        return $this;
+    }
+
+    /**
+     * Get topicId
+     *
+     * @return string $topicId
+     */
+    public function getTopicId()
+    {
+        return $this->topic_id;
     }
 }
