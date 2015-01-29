@@ -1,6 +1,6 @@
 <?php
 // src/Deb/TopicsBundle/Document/MemberVote.php
-namespace Deb\TopicsBundle\MemberVote;
+namespace Deb\TopicsBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,5 +28,58 @@ class MemberVote
      */
     protected $member_id;
     
-}
 
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param string $userId
+     * @return self
+     */
+    public function setUserId($userId)
+    {
+        $this->user_id = $userId;
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return string $userId
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * Set memberId
+     *
+     * @param string $memberId
+     * @return self
+     */
+    public function setMemberId($memberId)
+    {
+        $this->member_id = $memberId;
+        return $this;
+    }
+
+    /**
+     * Get memberId
+     *
+     * @return string $memberId
+     */
+    public function getMemberId()
+    {
+        return $this->member_id;
+    }
+}
