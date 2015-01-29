@@ -36,6 +36,25 @@
                 #}
                 
             }
+            $('#VoteForMemberBtn').click(function(ev){
+               $.ajax({
+                    type        : "POST",
+                    url         : '{{ path('topic_vote_member') }}',
+                    data        : { topic_id : '54c0ece9db304bf80c7b23c6', member_id : '54abe4ecdb304be90b7b23c6' },
+                    dataType    : "json",
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                            alert(data.message);
+                        } else if(data.success == true){
+                            alert('works');
+                        };                        
+                    },
+                    error: function(data, status, object){
+                        console.log(data.message);
+                    }
+                }); 
+            });            
+            
         });
         
     </script>
@@ -44,10 +63,16 @@
 
 {% block body %}
     
-   <div id="EventsList">
-        <input type="button" id="GetTopicListBtn" value="Get Topic List"><input type="text" id="GetTopicListTxt"> 
-        <input type="button" id="TopicStartedBtn" value="Start topic"><input type="text" id="TopicStartedTxt"> 
-   </div>
+    <div id="EventsList">
+         <input type="button" id="GetTopicListBtn" value="Get Topic Users List">Topic id :<input type="text" id="GetTopicListTxt"><br />
+         <input type="button" id="TopicStartedBtn" value="Start topic">Topic id :<input type="text" id="TopicStartedTxt"> 
+    </div>
+    
+    <div id="AjaxList">
+        <input type="button" id="VoteForMemberBtn" value="VoteForMember">
+        Topic id : <input type="text" id="VoteForMemberTopicId">
+        Member id : <input type="text" id="VoteForMemberMemberId"><br />
+    </div>
    
         
 {% endblock %}

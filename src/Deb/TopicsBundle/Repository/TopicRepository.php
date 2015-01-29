@@ -29,4 +29,17 @@ class TopicRepository extends DocumentRepository
                         
     }
     
+    public function UserIsTopicMember($user_id, $topic_id){
+        $qb = $this->createQueryBuilder('Topic');
+        $TopicsFound = $qb
+                ->field('members')->equals($user_id)
+                ->field('status_code')->equals('processing')
+                ->field('id')->equals($topic_id);            
+                
+        $TopicsFound = $TopicsFound->getQuery()->execute()->count();
+        //Если не состоит в обсуждения то, возвращаем false
+        return ($TopicsFound > 0) ? true : false;
+                        
+    }
+    
 }

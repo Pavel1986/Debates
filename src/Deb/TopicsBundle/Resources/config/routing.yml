@@ -1,11 +1,15 @@
 topics_list:
     path:     /
     defaults: { _controller: DebTopicsBundle:TopicsList:index }
+
+topic_vote_member:
+    path:     /detail/vote_member
+    defaults: { _controller: DebTopicsBundle:TopicDetail:ajaxVoteMember }        
         
 topic_detail:
     path:     /detail/{id}
     defaults: { _controller: DebTopicsBundle:TopicDetail:index }    
-    
+           
 info_page:
     path:     /info
     defaults: { _controller: DebTopicsBundle:InfoPage:index }   
