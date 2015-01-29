@@ -18,61 +18,61 @@
             var socket = io.connect('http://{{ app.request.host }}:8080');
         </script>                
         <script>
-                var MainModule = {};
-                MainModule.ShowAlertWindow = function(options){
+            var MainModule = {};
+            MainModule.ShowAlertWindow = function(options){
 
-                    options.type = typeof options.type !== 'undefined' ? options.type : "info";
-                    options.title = typeof options.title !== 'undefined' ? options.title : "";
-                    options.redirect_link = typeof options.redirect_link !== 'undefined' ? options.redirect_link : "";
-                    options.force2redirect = typeof options.force2redirect !== 'undefined' ? options.force2redirect : false;    
+                options.type = typeof options.type !== 'undefined' ? options.type : "info";
+                options.title = typeof options.title !== 'undefined' ? options.title : "";
+                options.redirect_link = typeof options.redirect_link !== 'undefined' ? options.redirect_link : "";
+                options.force2redirect = typeof options.force2redirect !== 'undefined' ? options.force2redirect : false;    
 
-                    $('#dialog-message').remove();
+                $('#dialog-message').remove();
 
-                    var ui_state_class;
-                    if(options.type === "error"){
-                        ui_state_class = "ui-state-error";
-                    }else{
-                        ui_state_class = "ui-state-highlight";
+                var ui_state_class;
+                if(options.type === "error"){
+                    ui_state_class = "ui-state-error";
+                }else{
+                    ui_state_class = "ui-state-highlight";
+                }
+
+                $('body').append('<div id="dialog-message"><div class="' + ui_state_class + '"><ul id="InfoMessageList"></ul></div>');
+
+                if(typeof(options.message) == 'object'){
+                    for (var InfoMessage in options.message)
+                    {
+                        $("#InfoMessageList").append('<li>' + options.message[InfoMessage] + '</li>');
                     }
-
-                    $('body').append('<div id="dialog-message"><div class="' + ui_state_class + '"><ul id="InfoMessageList"></ul></div>');
-
-                    if(typeof(options.message) == 'object'){
-                        for (var InfoMessage in options.message)
-                        {
-                            $("#InfoMessageList").append('<li>' + options.message[InfoMessage] + '</li>');
-                        }
+                }else{
+                    $("#InfoMessageList").append('<li>' + options.message + '</li>');
+                }
+                                   console.log(options.redirect_link.length);
+                if(options.force2redirect === true){
+                    dialog_buttons = { Redirect : function() { window.location = options.redirect_link; } };
+                }else{
+                    if(options.force2redirect === false && options.redirect_link.length > 0){
+                        dialog_buttons = { Redirect : function() { window.location = options.redirect_link; }, Close : function() { $( this ).dialog( "close" ); } };  
                     }else{
-                        $("#InfoMessageList").append('<li>' + options.message + '</li>');
+                        dialog_buttons = { Close : function() { $( this ).dialog( "close" ); } };
                     }
-                                       console.log(options.redirect_link.length);
-                    if(options.force2redirect === true){
-                        dialog_buttons = { Redirect : function() { window.location = options.redirect_link; } };
-                    }else{
-                        if(options.force2redirect === false && options.redirect_link.length > 0){
-                            dialog_buttons = { Redirect : function() { window.location = options.redirect_link; }, Close : function() { $( this ).dialog( "close" ); } };  
-                        }else{
-                            dialog_buttons = { Close : function() { $( this ).dialog( "close" ); } };
-                        }
-                    }
-                    
-                    var dialog_options = { autoOpen: false, modal: true, buttons: dialog_buttons };
+                }
 
-                    dialog_options.title = options.title;   
-                    dialog_options.open = function(event, ui){
-                        $(".ui-dialog-title").prepend("<img style='position: relative; top: 4px; height: 20px; margin-right: 10px' src='{{ asset('bundles/deb/images/info_messages/') }}" + options.type + ".png' />");
-                        $(".ui-dialog-titlebar-close").hide();
-                    };
+                var dialog_options = { autoOpen: false, modal: true, buttons: dialog_buttons };
 
-                    $("#dialog-message").dialog(dialog_options);
-                    $('#dialog-message').dialog('open');
+                dialog_options.title = options.title;   
+                dialog_options.open = function(event, ui){
+                    $(".ui-dialog-title").prepend("<img style='position: relative; top: 4px; height: 20px; margin-right: 10px' src='{{ asset('bundles/deb/images/info_messages/') }}" + options.type + ".png' />");
+                    $(".ui-dialog-titlebar-close").hide();
                 };
-                 options = {
-                    type : "info",
-                    title : "Message title",
-                    message : "Info Message",
-                    force2redirect : false
-                }                
+
+                $("#dialog-message").dialog(dialog_options);
+                $('#dialog-message').dialog('open');
+            };
+             options = {
+                type : "info",
+                title : "Message title",
+                message : "Info Message",
+                force2redirect : false
+            }                
         </script>
         <script src="{{ asset('bundles/deb/js/socket.js') }}"></script>
         <script src="{{ asset('bundles/deb/js/common.js') }}"></script>

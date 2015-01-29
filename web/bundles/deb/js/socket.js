@@ -16,6 +16,8 @@ $(function() {
         socket.on('TopicStarted', function (data) {
             MainModule.ShowAlertWindow({ message : "TopicStarted. To room.", title : "Topic started", force2redirect : true, redirect_link : "/detail/" + data.topic_id });
         });
-        
+        socket.on('TopicClosed', function (data) {
+            MainModule.ShowAlertWindow({ message : "TopicClosed. To room.", title : "Topic is closed", force2redirect : true, redirect_link : "/detail/" + data.topic_id });
+        });        
     }
 });
