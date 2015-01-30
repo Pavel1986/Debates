@@ -57,7 +57,11 @@
             <div id="TopicDetailDescription">
                 Описание : {{ topic.description }}
             </div>
-
+            
+            {% if topic.dateCreated is not null %}
+                MemberVote : {{ memberIDVote }}
+            {% endif %}
+            
             <form>
 
                 <div id="ChatBox" style="border: 1px solid green">

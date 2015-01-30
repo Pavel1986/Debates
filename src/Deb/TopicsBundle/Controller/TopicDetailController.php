@@ -19,18 +19,31 @@ class TopicDetailController extends Controller
         $locale = $this->get('request')->getLocale();
         
         $doNotShowJoin = true;
+        $showVotes = false;
         $securityContext = $this->container->get('security.context');
         $user = $securityContext->getToken()->getUser();
+        //Если пользователь авторизован
          if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             //Пользователь не участвует в других обсуждениях
              $isUserAnyTopicMember = $this->get('doctrine_mongodb')->getRepository('DebTopicsBundle:Topic')->isUserAnyTopicMember($user->getId());
              
+             //Для отображении кнопки Join
              if(! $isUserAnyTopicMember && $topic->getStatusCode() === "waiting" && count($topic->getMembers()) < 2){
                 $doNotShowJoin = false; 
              }                        
+             //Для отображении кнопок голосования             
+             if(! $isUserAnyTopicMember && $topic->getStatusCode() === "processing"){
+                 $showVotesBtn = true;
+                 //Получаем голос пользователя
+                 $memberVoteQb = $this->get('doctrine_mongodb')->getRepository('DebTopicsBundle:MemberVote')->createQueryBuilder('MemberVote');
+                 $memberVote = $memberVoteQb
+                    ->field('user_id')->equals($user->getId())
+                    ->field('topic_id')->equals($topic->getId())
+                    ->getQuery()->getSingleResult();
+             }
          }
         
-        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'topic' => $topic, 'user' => $user, 'doNotShowJoin' => $doNotShowJoin));
+        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'topic' => $topic, 'user' => $user, 'doNotShowJoin' => $doNotShowJoin, 'showVotesBtn' => $showVotesBtn, 'memberIDVote' => $memberVote->getMemberId() ));
     }
     
     public function ajaxVoteMemberAction(){
@@ -48,19 +61,12 @@ class TopicDetailController extends Controller
                     //Проверяем, что обсуждение существует (processing) и пользователь за которого он голосует участвует в нём                    
                     $params =  $request->request->all();
                     if($dm->getRepository('DebTopicsBundle:Topic')->UserIsTopicMember($params["member_id"], $params["topic_id"])){
-                        //Сохраняем голос в базу данных
-                        /*
-                        $memberVote = new MemberVote();                        
-                        $meberVote->setUserId($user->getId());
-                        $meberVote->setMemberId($params["member_id"]);
-                        $meberVote->setTopicId($params["topic_id"]);*/
-                        
+                        //Сохраняем голос в базу данных                      
                         $dm_manager = $dm->getManager();
                         
                         $memberVote = $dm_manager->getRepository('DebTopicsBundle:MemberVote')->findOneBy(array('topic_id' => $params["topic_id"], 'user_id' => $user->getId()));
                         /* Какого хера он возвращает topic_id = null ?????? */
-                        
-                        
+                        /* В accenture всё работает как надо, надо проверить ещё раз в vault */                        
                         if($memberVote){
                             $memberVote->setMemberId($params["member_id"]);
                         }else{
@@ -92,49 +98,6 @@ class TopicDetailController extends Controller
             $response->headers->set('Content-Type', 'application/json');
             
             return $response;
-        }
-        
-        
-            
-            /*
-            $securityContext = $this->container->get('security.context');
-            $user = $securityContext->getToken()->getUser();
-            if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-                
-                $dm = $this->get('doctrine_mongodb');
-                //Проверяем состоит ли пользователь в активных обсуждения [ waiting | processing ]
-                if(! $dm->getRepository('DebTopicsBundle:Topic')->isUserAnyTopicMember($user->getId())){
-                 
-                    $dm = $dm->getManager();                
-                    $dm->persist($topic);
-                    $dm->flush();
-
-                    //Возвращаем ответ
-                    //$result = array('success' => false, 'message' => 'Topic created');                                                
-                    $referer_url = $request->headers->get('referer');
-                    $result = array('success' => true, 'url' => $referer_url);
-
-                }else{
-                    $FormErrorIterator = $form->getErrors(true);                        
-                    $messages = preg_replace("/(\n)/", "<br/>", $FormErrorIterator->__toString());
-                    $messages = preg_replace("/(ERROR: )/", "", $messages);
-                    $result = array('success' => false, 'message' => $messages);                                  
-                }               
-
-                }else{
-                    $message= $this->get('translator')->trans('topic.create.author_is_member', array(), 'DebTopicsBundle');
-                    $result = array('success' => false, 'message' => $message.'<br />'); 
-                }
-                
-            }else{
-                $message= $this->get('translator')->trans('topic.create.auth', array(), 'DebTopicsBundle');
-                $result = array('success' => false, 'message' => $message.'<br />'); 
-            }
-            
-            $response = new Response(json_encode($result));
-            $response->headers->set('Content-Type', 'application/json');     
-
-            return $response;
-            */
+        }       
     }
 }
