@@ -1,0 +1,21 @@
+menu:
+    index : "Main"
+    detail: "Detail"
+    info  : "Information"
+    personal : "Personal section"
+
+topic:
+    create:
+        title: "Topic creation"
+        button: "Create topic"
+        name: "Title"
+        description: "Description"
+        time_options: "Topic time"        
+        close: "Close"
+        auth: "You are not authorized or your session is over. Please, try to reload this page."
+        author_is_member: "You are already in active topics."
+    detail:
+        member_is_not_in_topic: "User, which you are voting for, is not found in this topic. Please, try to reload this page."
+
+topic_filter:
+    refresh_button: "Refresh topics list"

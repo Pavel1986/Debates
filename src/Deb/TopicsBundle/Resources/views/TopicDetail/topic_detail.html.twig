@@ -1,5 +1,102 @@
 {% extends '::debates/base.html.twig' %}
+{% trans_default_domain 'DebTopicsBundle' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link href="{{ asset('bundles/deb/css/topic-detail.css') }}" rel="stylesheet" />
+    
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script>
+        $(function() {                         
+            
+            if(socket){
+            
+                socket.emit('joinTopic', { topic_id : "{{ topic.id }}" });
+        
+                $("#TopicDetail").find("#Send").click(function () {
+                    socket.emit('message', { topic_id : "{{ topic.id }}", message : $("#TextField").val() });
+                });
+                
+                {% if doNotShowJoin == false %}
+                
+                $("#TopicDetail").find("#Join").click(function () {
+                    socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
+                });  
+                
+                {% endif %}
+                            
+            }
+        });
+        
+    </script>
+    
+{% endblock %}
 
 {% block body %}
-   Topic Detail
+       
+    {% if topic is not null %}                                    
+    
+        {% if topic.dateCreated is not null %}
+            <li>date : {{ topic.dateCreated|date('Y-m-d H:i:s') }}</li>
+        {% endif %}
+        <li>id : {{ topic.id }}</li>
+        <li>name : {{ topic.name }}</li>
+        <li>description : {{ topic.description }}</li>
+        <li>status : {{ topic.statusCode }}</li>
+        
+        <div id="TopicDetail">
+            <div id="TopicDetailTitle">
+                <span class="TopicStatus">Topic.Category.Value :: </span>Topic.Author.Name : {{ topic.name }}
+                <span id="BackLink"><a href="">Back to list</a></span>
+            </div>
+            <div id="TopicDetailDescription">
+                Описание : {{ topic.description }}
+            </div>
+            
+            {#
+            {% if topic.dateCreated is not null %}
+                MemberVote : {{ memberIDVote }}
+            {% endif %} #}
+            
+            <form>
+
+                <div id="ChatBox" style="border: 1px solid green">
+                    <div id="MessagesList">
+
+                    </div>
+                    <div id="VisitorsDiv">
+                        <div>Visitors list :</div>
+                        <div id="VisitorsList">
+                            <ul>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+                    
+                {% if doNotShowJoin == false %}
+                    <input id="Join" type="button" value="Join">
+                {% endif %}
+                <div id="SendDiv">
+                    <input id="TextField" type="text" style="width: 250px"><input id="Send" type="button" value="Send">
+                </div>
+
+                <br /><br />                
+
+            </form>
+        </div>
+   
+   {% else %}  
+       
+       Topic not found
+       
+       
+   {% endif %}   
+   
 {% endblock %}

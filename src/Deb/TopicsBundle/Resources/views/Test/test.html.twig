@@ -1,0 +1,102 @@
+{% extends '::debates/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <style>        
+        #EventsList, #AjaxList { padding: 20px; }
+        #EventsList input[type=text], #AjaxList input[type=text]{
+            width: 300px;
+        }
+    </style>
+    
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script>
+        $(function() { 
+            
+            if(socket){
+                
+                $("#GetTopicListBtn").click(function () {
+                    socket.emit('getUsersList', { topic_id : $("#GetTopicListTxt").val() });
+                });
+        
+                $("#TopicStartedBtn").click(function () {
+                    socket.emit('TopicStarted', { topic_id : $("#TopicStartedTxt").val() });
+                });
+                                
+                $("#VoteForMember1Btn").click(function () {
+                    socket.emit('VoteMember', { topic_id : "54cbc5a56803faea088b4567", member_id : "54c331036803fa19088b456a" });
+                });
+                
+                $("#VoteForMember2Btn").click(function () {
+                    socket.emit('VoteMember', { topic_id : "54cbc5a56803faea088b4567", member_id : "54ac29326803fa7c088b4567" });
+                });
+            
+                
+            }
+            
+            /*
+            $('#VoteForMember1Btn').click(function(ev){
+               $.ajax({
+                    type        : "POST",
+                    url         : '{{ path('topic_vote_member') }}',
+                    data        : { topic_id : '54cbc5a56803faea088b4567', member_id : '54c331036803fa19088b456a' },
+                    dataType    : "json",
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                            alert(data.message);
+                        } else if(data.success == true){
+                            alert('works');
+                        };                        
+                    },
+                    error: function(data, status, object){
+                        console.log(data.message);
+                    }
+                }); 
+            });
+            */
+            /*
+            $('#VoteForMember2Btn').click(function(ev){
+               $.ajax({
+                    type        : "POST",
+                    url         : '{{ path('topic_vote_member') }}',
+                    data        : { topic_id : '54cbc5a56803faea088b4567', member_id : '54ac29326803fa7c088b4567' }, 
+                    dataType    : "json",
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                            alert(data.message);
+                        } else if(data.success == true){
+                            alert('works');
+                        };                        
+                    },
+                    error: function(data, status, object){
+                        console.log(data.message);
+                    }
+                }); 
+            });   
+            */
+        });
+        
+    </script>
+    
+{% endblock %}
+
+{% block body %}
+    
+    <div id="EventsList">
+         <input type="button" id="GetTopicListBtn" value="Get Topic Users List">Topic id :<input type="text" id="GetTopicListTxt"><br />
+         <input type="button" id="TopicStartedBtn" value="Start topic">Topic id :<input type="text" id="TopicStartedTxt"> 
+    </div>
+    
+    <div id="AjaxList">
+        <input type="button" id="VoteForMember1Btn" value="VoteForMember1">
+        <input type="button" id="VoteForMember2Btn" value="VoteForMember2">
+
+    </div>
+   
+        
+{% endblock %}

@@ -1,0 +1,11 @@
+exten_fos_user_security_check:
+    path:     /login_check
+    defaults: { _controller: FOSUserBundle:Security:check }
+
+exten_fos_user_security_logout:
+    path:     /logout
+    defaults: { _controller: FOSUserBundle:Security:logout }
+    
+exten_fos_user_register_check:
+    path:    /register_check
+    defaults: { _controller: FOSUserBundle:Registration:ajaxRegister }

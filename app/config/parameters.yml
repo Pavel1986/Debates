@@ -1,8 +1,8 @@
 # This file is auto-generated during the composer install
 parameters:
     database_driver: pdo_mysql
-    database_host: local
-    database_port: null
+    database_host: localhost
+    database_port: 27017
     database_name: debates
     database_user: root
     database_password: pavel
@@ -11,7 +11,12 @@ parameters:
     mailer_user: null
     mailer_password: null
     locale: en
-    secret: ThisTokenIsNotSoSecretChangeIt
+    secret: NewSecrreetTekken
     debug_toolbar: true
     debug_redirects: false
     use_assetic_controller: true
+    locales : [ ru, en ]
+jms_i18n_routing:
+    default_locale: %locale%
+    locales: %locales%
+    strategy: prefix_except_default

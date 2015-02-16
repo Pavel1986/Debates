@@ -1,5 +1,172 @@
 {% extends '::debates/base.html.twig' %}
+{% trans_default_domain 'DebTopicsBundle' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link href="{{ asset('bundles/deb/css/topics-list.css') }}" rel="stylesheet" />
+    <style>
+        .custom-combobox {
+            position: relative;
+            display: inline-block;
+            padding-right: 50px;
+        }
+        .custom-combobox-input {
+            margin: 0;
+            padding: 0.3em;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/deb/js/combobox.js') }}"></script>
+    <script>
+        
+        $(function() {            
+            $("#RefreshTopicsList").button({
+                text: false,
+                icons: {
+                  primary: "ui-icon-refresh",
+                  label: ""
+                }                
+            });
+            
+            $("#CreateTopicForm").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "{{ 'topic.create.title'|trans }}", 
+                width: "50%"
+            });
+            
+            $('#CreateTopicAjaxForm').submit(function(event){
+
+                event.preventDefault();
+                
+                $.ajax({
+                    type        : $('form').attr( 'method' ),
+                    url         : '{{ path('topic_create') }}',
+                    data        : $('#CreateTopicAjaxForm').serialize(),
+                    dataType    : "json",
+                    success     : function(data, status, object) {
+                        if(data.success == false){
+                            $('#CreateTopicErrors').html('<br />' + data.message + '<br /><br />') 
+                        } else if(data.success == true){
+                            window.location.replace(data.url);
+                        };                        
+                    },
+                    error: function(data, status, object){
+                        console.log(data.message);
+                    }
+                });
+            });
+            
+            $('#CreateTopicBtn').click(function(ev){
+                $("#CreateTopicForm").dialog("open");
+            });
+            
+            $('#CreateTopicAjaxForm ._close').click(function() {
+                $("#CreateTopicForm").dialog( "close" );                      
+            });
+            
+            $("#CategoryList").combobox();
+            $("#StatusList").selectmenu(); 
+            $("#SortList").selectmenu();
+            $("#CreateTopicBtn").button();
+          });
+    </script>
+{% endblock %}
 
 {% block body %}
-    Topics List      
+               
+        <div id="TopicsFilter">
+
+        <button id="RefreshTopicsList">{{ 'topic_filter.refresh_button'|trans }}</button>
+
+        Category :
+        <select id="CategoryList">
+            <option value="All">All</option>
+            <option value="ActionScript">ActionScript</option>
+            <option value="AppleScript">AppleScript</option>
+            <option value="Asp">Asp</option>
+            <option value="BASIC">BASIC</option>
+            <option value="C">C</option>
+            <option value="C++">C++</option>
+            <option value="Clojure">Clojure</option>
+            <option value="COBOL">COBOL</option>
+            <option value="ColdFusion">ColdFusion</option>
+        </select>
+
+        Status :
+        <select id="StatusList">
+            <option value="All">All</option>
+            <option value="Opened">Opened</option>
+            <option value="Completed">Completed</option>
+            <option value="Closed">Closed</option>
+        </select>
+
+        Sorting :
+        <select id="SortList">
+            <option value="Date">Date</option>
+            <option value="popular">Most popular</option>
+            <option value="commented">Most commented</option>
+        </select>
+
+        {% if app.user %}
+            <button id="CreateTopicBtn">{{ 'topic.create.button'|trans }}</button>
+        {% endif %}
+        
+
+    </div>
+    <br />
+    Current locale : {{ locale }}    
+    <br />
+    
+    <div>
+        {% for topic in topics %}
+          
+            <a href="{{ path('topic_detail', {'id': topic.id}) }}">
+            <ul>
+                {% if topic.dateCreated is not null %}
+                    <li>date : {{ topic.dateCreated|date('Y-m-d H:i:s') }}</li>
+                {% endif %}
+                <li>name : {{ topic.name }}</li>
+                <li>status : {{ topic.statusCode }}</li>
+            </ul>
+            </a>
+
+    {% endfor %}        
+    </div>
+    
+    {% if app.user %}
+    
+        <div id="CreateTopicForm">
+            <div id="CreateTopicErrors"></div>
+            <form id="CreateTopicAjaxForm" method="post" {{ form_enctype(form) }}>
+
+                <div id="deb_topic_create">
+                    <div>
+                        <label for="deb_topic_create_name" class="required">{{ 'topic.create.name'|trans }}</label><br />
+                        <input id="deb_topic_create_name" name="deb_topic_create[name]" required="required" type="text">
+                    </div>
+                    <div>
+                        <label for="deb_topic_create_description" class="required">{{ 'topic.create.description'|trans }}</label><br />
+                        <textarea id="deb_topic_create_description" name="deb_topic_create[description]" required="required"></textarea>
+                    </div>
+                    <div>
+                    {{ form_label(form.processing_time) }}
+                    {{ form_widget(form.processing_time) }}                
+                    </div>
+                    {{ form_row(form._token) }}
+                </div>
+                <br />
+                <hr />
+                <input type="submit" class="_submit" name="_submit" value="{{ 'topic.create.button'|trans }}" />
+                <input type="button" class="_close" value="{{ 'topic.create.close'|trans }}" />
+            </form>
+        </div>
+        
+    {% endif %}
+    
 {% endblock %}

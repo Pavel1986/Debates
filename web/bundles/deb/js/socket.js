@@ -1,42 +1,23 @@
-var Socket = io();
-
-/******** Socket events *********/
-
-Socket.on('error', function (reason){
-
-    var InfoData = new Object()
-    InfoData.MessageType = "Error";
-    InfoData.MessageTitle = "Authorization error";
-    InfoData.MessageContent = "For site properly work, cookies must be enabled in browser.";
-
-    MainModule.ShowAlertWindow(InfoData);
-});
-
-Socket.on('UserInfoMessage', function (InfoData) {
-    MainModule.ShowAlertWindow(InfoData);
-});
-
-Socket.on('UserRedirect', function (Location) {
-
-    if(Location["Url"]){
-        window.location=Location["Url"];
+$(function() {
+    
+    if(socket){    
+        socket.on('message', function (message) {
+            $("#MessagesList").prepend(new Date().toLocaleString() + ' ' +message + "<br />");
+        });
+        
+        socket.on('messages_list', function (data) {
+            $.each(data.messages, function(index, message) {
+                $("#MessagesList").prepend(new Date(message.date_created).toLocaleString() + ' ' + message.message + "<br />");
+            });
+        });
+        socket.on('TopicStartedAuthor', function (data) {
+            MainModule.ShowAlertWindow({ message : "TopicStarted. To author only.", title : "Topic started", force2redirect : true, redirect_link : "/detail/" + data.topic_id });
+        });
+        socket.on('TopicStarted', function (data) {
+            MainModule.ShowAlertWindow({ message : "TopicStarted. To room.", title : "Topic started", force2redirect : true, redirect_link : "/detail/" + data.topic_id });
+        });
+        socket.on('TopicClosed', function (data) {
+            MainModule.ShowAlertWindow({ message : "TopicClosed. To room.", title : "Topic is closed", force2redirect : true, redirect_link : "/detail/" + data.topic_id });
+        });        
     }
 });
-
-Socket.on('SessionOver', function (Location) {
-    alert('Your session is over. Please, reload the page');
-});
-
-/*********************************/
-
-var SocketModule = {};
-
-SocketModule.SendEmit = function(Socket, Event, arParams){
-
-    if(Socket.socket.connected === true){
-
-        Socket.emit(Event, arParams);
-    }else{
-        alert("Connection is over");
-    }
-}

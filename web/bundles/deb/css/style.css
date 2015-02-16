@@ -21,50 +21,17 @@ img{
     padding-bottom: 20px;
 }
 
-#logo{
-    width: 100px;
-    margin-bottom: 20px;
-}
-
 #menu{
       display: inline;
 }
-
-#auth{
-    float: right;
-    display: block;
-    margin-bottom: 10px;
+.fos_user_login_form, #fos_user_registration_form, #CreateTopicForm {
+    text-align: center;
 }
 
-#languages{
-    clear: both;
-    float: right;
-    display: block;
+input[type=text], input[type=password], input[type=email], #CreateTopicForm textarea  {
+   width: 90%;
 }
 
-#languages a {
-    margin-right: 10px;
+#CreateTopicForm textarea {
+    min-height: 150px;
 }
-
-
-/* jQuery Combobox style*/
-.custom-combobox {
-    position: relative;
-    display: inline-block;
-    padding-right: 50px;
-}
-.custom-combobox-toggle {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-left: -1px;
-    padding: 0;
-    /* support: IE7 */
-    *height: 1.7em;
-    *top: 0.1em;
-}
-.custom-combobox-input {
-    margin: 0;
-    padding: 0.3em;
-}
-/*********************/

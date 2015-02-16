@@ -1,13 +1,140 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}{% endblock %}</title>
+        
+        <link href="{{ asset('bundles/deb/css/ui-lightness/jquery-ui-v1.11.2.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('bundles/deb/css/ui-lightness/jquery-ui.theme-v1.11.2.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('bundles/deb/css/style.css') }}" rel="stylesheet" />            
         {% block stylesheets %}{% endblock %}
+        
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        
+        <script src="{{ asset('bundles/deb/js/jquery-v1.10.2.js') }}"></script>
+        <script src="{{ asset('bundles/deb/js/jquery-ui-1.11.2.min.js') }}"></script>
+        <script src="http://{{ app.request.host }}:8080/socket.io/socket.io.js"></script>        
+        <script>
+            var socket = io.connect('http://{{ app.request.host }}:8080');
+        </script>                
+        <script>
+            var MainModule = {};
+            MainModule.ShowAlertWindow = function(options){
+
+                options.type = typeof options.type !== 'undefined' ? options.type : "info";
+                options.title = typeof options.title !== 'undefined' ? options.title : "";
+                options.redirect_link = typeof options.redirect_link !== 'undefined' ? options.redirect_link : "";
+                options.force2redirect = typeof options.force2redirect !== 'undefined' ? options.force2redirect : false;    
+
+                $('#dialog-message').remove();
+
+                var ui_state_class;
+                if(options.type === "error"){
+                    ui_state_class = "ui-state-error";
+                }else{
+                    ui_state_class = "ui-state-highlight";
+                }
+
+                $('body').append('<div id="dialog-message"><div class="' + ui_state_class + '"><ul id="InfoMessageList"></ul></div>');
+
+                if(typeof(options.message) == 'object'){
+                    for (var InfoMessage in options.message)
+                    {
+                        $("#InfoMessageList").append('<li>' + options.message[InfoMessage] + '</li>');
+                    }
+                }else{
+                    $("#InfoMessageList").append('<li>' + options.message + '</li>');
+                }
+                                   console.log(options.redirect_link.length);
+                if(options.force2redirect === true){
+                    dialog_buttons = { Redirect : function() { window.location = options.redirect_link; } };
+                }else{
+                    if(options.force2redirect === false && options.redirect_link.length > 0){
+                        dialog_buttons = { Redirect : function() { window.location = options.redirect_link; }, Close : function() { $( this ).dialog( "close" ); } };  
+                    }else{
+                        dialog_buttons = { Close : function() { $( this ).dialog( "close" ); } };
+                    }
+                }
+
+                var dialog_options = { autoOpen: false, modal: true, buttons: dialog_buttons };
+
+                dialog_options.title = options.title;   
+                dialog_options.open = function(event, ui){
+                    $(".ui-dialog-title").prepend("<img style='position: relative; top: 4px; height: 20px; margin-right: 10px' src='{{ asset('bundles/deb/images/info_messages/') }}" + options.type + ".png' />");
+                    $(".ui-dialog-titlebar-close").hide();
+                };
+
+                $("#dialog-message").dialog(dialog_options);
+                $('#dialog-message').dialog('open');
+            };
+             options = {
+                type : "info",
+                title : "Message title",
+                message : "Info Message",
+                force2redirect : false
+            }                
+        </script>
+        <script src="{{ asset('bundles/deb/js/socket.js') }}"></script>
+        <script src="{{ asset('bundles/deb/js/common.js') }}"></script>
+        {% block javascripts %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        
+        <div id="structure">
+
+            <div id="header">   
+                <div id="lang-menu">
+                    <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'})) }}">
+                        <img src="{{ asset('bundles/deb/images/flags/en.png') }}">
+                    </a>
+                    <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'ru'})) }}">
+                        <img src="{{ asset('bundles/deb/images/flags/ru.png') }}">
+                    </a>
+                </div>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    {% else %}
+                        
+                        <input id="LoginBtn" type="button" value="{{ 'layout.login'|trans({}, 'FOSUserBundle') }}">
+                        <input id="RegisterBtn" type="button" value="{{ 'layout.register'|trans({}, 'FOSUserBundle') }}">
+                        
+                        {% render url('fos_user_security_login') %}                        
+                        {% render url('fos_user_registration_register') %}
+                        
+                    {% endif %}
+
+                {% for type, messages in app.session.flashBag.all %}
+                    {% for message in messages %}
+                        <div class="{{ type }}">
+                            {{ message|trans({}, 'FOSUserBundle') }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+
+                {% block main_menu %}                                        
+                    
+                    <div id="menu">
+
+                        <a href="{{ path('topics_list') }}">     {{ 'menu.index'    |trans({}, 'DebTopicsBundle') }}</a>
+                        <a href="{{ path('info_page') }}">       {{ 'menu.info'     |trans({}, 'DebTopicsBundle') }}</a>
+                        {% if app.user %}
+                            <a href="{{ path('personal_section') }}">{{ 'menu.personal' |trans({}, 'DebTopicsBundle') }}</a>
+                        {% endif %}                        
+
+                    </div>
+                {% endblock %}
+
+            </div>
+
+            <div id="content">
+                {% block body %}{% endblock %}
+            </div>
+
+        </div>
+        
     </body>
 </html>

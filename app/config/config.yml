@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -20,12 +20,16 @@ framework:
     trusted_proxies: ~
     session:
         # handler_id set to null will use default session handler from php.ini
+        name: "DBSession"
         handler_id:  ~
+        cookie_lifetime: 10000
     fragments:       ~
     http_method_override: true
 
 # Twig Configuration
 twig:
+    globals:
+        locales: %locales%
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
@@ -43,22 +47,22 @@ assetic:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
 # Doctrine Configuration
-doctrine:
-    dbal:
-        driver:   "%database_driver%"
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
+#doctrine:
+#    dbal:
+#        driver:   "%database_driver%"
+#        host:     "%database_host%"
+#        port:     "%database_port%"
+#        dbname:   "%database_name%"
+#        user:     "%database_user%"
+#        password: "%database_password%"
+#        charset:  UTF8
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"
         # path:     "%database_path%"
 
-    orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
+ #   orm:
+ #       auto_generate_proxy_classes: "%kernel.debug%"
+ #       auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -79,9 +83,12 @@ doctrine_mongodb:
             auto_mapping: true
             
 fos_user:
-    db_driver: mongodb # other valid values are 'mongodb', 'couchdb' and 'propel'
+    db_driver: mongodb
     firewall_name: main
-    user_class: Deb\UserBundle\Document\User            
+    user_class: Exten\FOSUserBundle\Document\User         
+    registration:
+        form:
+            type: exten_fos_user_registration
     
 hwi_oauth:
     firewall_name: secured_area
@@ -90,3 +97,28 @@ hwi_oauth:
             type:                facebook
             client_id:           1423207801254406
             client_secret:       53fca6628ad074aa348eb757281670f1
+            
+services:
+    authentication_handler:
+        class: Exten\FOSUserBundle\Handler\AuthenticationHandler
+        arguments:  [@router, @translator]
+    logout_handler:
+        class: Exten\FOSUserBundle\Handler\LogoutHandler
+        arguments: [ @doctrine_mongodb, @service_container ]
+    exten_locale.locale_listener:
+        class: Exten\LocaleBundle\EventListener\LocaleListener
+        arguments: ["%kernel.default_locale%"]
+        tags:
+            - { name: kernel.event_subscriber }
+    #temporary not using, let's leave this for opportunity
+    topics_service:
+        class: Deb\TopicsBundle\Service\TopicsService      
+    deb.listener.login:  
+        class: Exten\FOSUserBundle\Handler\CookieSessionHandler
+        arguments: [ @doctrine_mongodb, @service_container ]
+        tags:  
+         - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+    exten_fos_user.registration.form.type:
+        class: Exten\FOSUserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: exten_fos_user_registration }
