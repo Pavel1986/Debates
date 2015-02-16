@@ -27,21 +27,24 @@
                 $("#TopicStartedBtn").click(function () {
                     socket.emit('TopicStarted', { topic_id : $("#TopicStartedTxt").val() });
                 });
+                                
+                $("#VoteForMember1Btn").click(function () {
+                    socket.emit('VoteMember', { topic_id : "54cbc5a56803faea088b4567", member_id : "54c331036803fa19088b456a" });
+                });
                 
-                {#
-                $("#TopicDetail").find("#Join").click(function () {
-                    socket.emit('addMember', { topic_id : "{{ topic.id }}", user_id : "{{ user.id }}" });
-                });                  
+                $("#VoteForMember2Btn").click(function () {
+                    socket.emit('VoteMember', { topic_id : "54cbc5a56803faea088b4567", member_id : "54ac29326803fa7c088b4567" });
+                });
             
-                #}
                 
             }
+            
+            /*
             $('#VoteForMember1Btn').click(function(ev){
                $.ajax({
                     type        : "POST",
                     url         : '{{ path('topic_vote_member') }}',
-                    //data        : { topic_id : '54bea0796803faab068b4567', member_id : '54ac29326803fa7c088b4567' }, //Vault
-                    data        : { topic_id : '54c0ece9db304bf80c7b23c6', member_id : '54abe4ecdb304be90b7b23c6' },
+                    data        : { topic_id : '54cbc5a56803faea088b4567', member_id : '54c331036803fa19088b456a' },
                     dataType    : "json",
                     success     : function(data, status, object) {
                         if(data.success == false){
@@ -54,13 +57,14 @@
                         console.log(data.message);
                     }
                 }); 
-            });      
+            });
+            */
+            /*
             $('#VoteForMember2Btn').click(function(ev){
                $.ajax({
                     type        : "POST",
                     url         : '{{ path('topic_vote_member') }}',
-                    //data        : { topic_id : '54bea0796803faab068b4567', member_id : '54c32ef46803fa71048b4568' }, //Vault
-                    data        : { topic_id : '54c0ece9db304bf80c7b23c6', member_id : '54803e78db304b7c0f7b23c6' },
+                    data        : { topic_id : '54cbc5a56803faea088b4567', member_id : '54ac29326803fa7c088b4567' }, 
                     dataType    : "json",
                     success     : function(data, status, object) {
                         if(data.success == false){
@@ -74,7 +78,7 @@
                     }
                 }); 
             });   
-            
+            */
         });
         
     </script>

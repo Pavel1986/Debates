@@ -43,7 +43,8 @@ class TopicDetailController extends Controller
              }
          }
         
-        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'topic' => $topic, 'user' => $user, 'doNotShowJoin' => $doNotShowJoin, 'showVotesBtn' => $showVotesBtn, 'memberIDVote' => $memberVote->getMemberId() ));
+        //return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'topic' => $topic, 'user' => $user, 'doNotShowJoin' => $doNotShowJoin, 'showVotesBtn' => $showVotesBtn, 'memberIDVote' => $memberVote->getMemberId() ));
+        return $this->render('DebTopicsBundle:TopicDetail:topic_detail.html.twig', array('locale' => $locale, 'topic' => $topic, 'user' => $user, 'doNotShowJoin' => $doNotShowJoin));
     }
     
     public function ajaxVoteMemberAction(){
